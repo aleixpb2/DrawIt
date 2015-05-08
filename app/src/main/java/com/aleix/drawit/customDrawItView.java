@@ -1,17 +1,14 @@
 package com.aleix.drawit;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.View;
+import android.widget.LinearLayout;
 
 
-public class customDrawItView extends View {
+public class customDrawItView extends LinearLayout {
     //private String mExampleString;
     //private int mExampleColor = Color.RED;
     //private float mExampleDimension = 0;
@@ -20,6 +17,14 @@ public class customDrawItView extends View {
     //private TextPaint mTextPaint;
     //private float mTextWidth;
     //private float mTextHeight;
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        int size = width > height ? height : width; // minim
+        setMeasuredDimension(size, size); // vista quadrada
+    }
 
     private Paint mPaint;
 
