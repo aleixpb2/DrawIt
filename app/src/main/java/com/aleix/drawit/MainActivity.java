@@ -13,7 +13,7 @@ public class MainActivity extends ActionBarActivity{
     private customDrawItView mCustomDrawItView;
     private ImageButton pencilButton;
     private ImageButton circleButton;
-    private ImageButton squareButton;
+    private ImageButton colorButton;
 
     private ImageButton saveButton;
 
@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity{
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
         pencilButton = (ImageButton) findViewById(R.id.pencil);
         circleButton = (ImageButton) findViewById(R.id.circle);
-        squareButton = (ImageButton) findViewById(R.id.square);
+        colorButton = (ImageButton) findViewById(R.id.color);
 
         saveButton = (ImageButton) findViewById(R.id.save);
 
@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity{
             }
         });
 
-        squareButton.setOnClickListener(new View.OnClickListener() {
+        colorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //

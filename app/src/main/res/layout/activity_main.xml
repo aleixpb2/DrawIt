@@ -24,8 +24,9 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/square"
-            android:id="@+id/square"/>
+            android:background="#ff000000"
+            android:src="@drawable/abc_btn_check_to_on_mtrl_000"
+            android:id="@+id/color"/>
         </LinearLayout>
 
     <View style="@style/Divider"/>
@@ -34,6 +35,7 @@
     <com.aleix.drawit.customDrawItView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffffffff"
         android:id="@+id/customDrawItView"/>
 
     <View style="@style/Divider"/>

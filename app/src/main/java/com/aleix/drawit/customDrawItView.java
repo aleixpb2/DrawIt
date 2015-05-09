@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -14,21 +15,15 @@ public class customDrawItView extends View {
     //private int mExampleColor = Color.RED;
     //private float mExampleDimension = 0;
     //private Drawable mExampleDrawable;
-
     //private TextPaint mTextPaint;
     //private float mTextWidth;
     //private float mTextHeight;
 
-    private Paint mPaint;
-    private final String LOG_TAG = customDrawItView.class.getSimpleName();
+    private Paint mPaint, mCanvasPaint;
+    private Path mPath;
+    private Canvas mCanvas;
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-        int size = width > height ? height : width; // minim
-        setMeasuredDimension(size, size); // vista quadrada
-    }
+    private final String LOG_TAG = customDrawItView.class.getSimpleName();
 
     // Constructors needed to allow the ADT to interact with the view
     public customDrawItView(Context context) {
@@ -44,56 +39,24 @@ public class customDrawItView extends View {
         init(attrs, defStyle);
     }
 
-    private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        /*
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.customDrawItView, defStyle, 0);
-
-        mExampleString = a.getString(
-                R.styleable.customDrawItView_exampleString);
-        mExampleColor = a.getColor(
-                R.styleable.customDrawItView_exampleColor,
-                mExampleColor);
-        // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
-        // values that should fall on pixel boundaries.
-        mExampleDimension = a.getDimension(
-                R.styleable.customDrawItView_exampleDimension,
-                mExampleDimension);
-
-        if (a.hasValue(R.styleable.customDrawItView_exampleDrawable)) {
-            mExampleDrawable = a.getDrawable(R.styleable.customDrawItView_exampleDrawable);
-            mExampleDrawable.setCallback(this);
-        }
-
-        a.recycle();
-
-        // Set up a default TextPaint object
-        mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setTextAlign(Paint.Align.LEFT);
-
-        // Update TextPaint and text measurements from attributes
-        */
+    private void init(AttributeSet attrs, int defStyle) { //TODO: es setupDrawing()
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.BLACK); // Black by default
-        mPaint.setTextSize(40); // Big size by default
+        mPaint.setTextSize(40); // Big size by default TODO: text drawing
+
+        mPath = new Path();
+
 
         invalidate();
-        //invalidateTextPaintAndMeasurements();
     }
 
-
-    private void invalidateTextPaintAndMeasurements() {
-        // TODO: és com invalidate(); ? Cal també requestLayout(); ?
-        /*
-        mTextPaint.setTextSize(mExampleDimension);
-        mTextPaint.setColor(mExampleColor);
-        mTextWidth = mTextPaint.measureText(mExampleString);
-
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = fontMetrics.bottom; */
-        invalidate();
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        int size = width > height ? height : width; // minim
+        setMeasuredDimension(size, size); // vista quadrada
     }
 
     @Override
@@ -105,8 +68,8 @@ public class customDrawItView extends View {
         //int paddingTop = getPaddingTop();
         //int paddingRight = getPaddingRight();
         //int paddingBottom = getPaddingBottom();
-        int contentWidth = getWidth();// - paddingLeft - paddingRight;
-        int contentHeight = getHeight();// - paddingTop - paddingBottom;
+        int contentWidth = getWidth();
+        int contentHeight = getHeight();
         //Debug:
         Log.i(LOG_TAG, "Painting:\nWidth = " + contentWidth + "\nHeight = " + contentHeight);
 
@@ -117,55 +80,10 @@ public class customDrawItView extends View {
         canvas.drawCircle(contentWidth, 0.0f, 100f, mPaint);
 
         canvas.drawText("Text de prova", 5, contentHeight/2, mPaint);
-
-        // Draw the text.
-        /*
-        canvas.drawText(mExampleString,
-                paddingLeft + (contentWidth - mTextWidth) / 2,
-                paddingTop + (contentHeight + mTextHeight) / 2,
-                mTextPaint);
-                */
-
-        // Draw the example drawable on top of the text.
-        /*
-        if (mExampleDrawable != null) {
-            mExampleDrawable.setBounds(paddingLeft, paddingTop,
-                    paddingLeft + contentWidth, paddingTop + contentHeight);
-            mExampleDrawable.draw(canvas);
-        }*/
     }
 
     public void setPaintColor(int paintColor){
         mPaint.setColor(paintColor);
         invalidate(); // TODO: no cal
     }
-
-    /*
-    public String getExampleString() {
-        return mExampleString;
-    }
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
-        invalidateTextPaintAndMeasurements();
-    }
-    public int getExampleColor() {
-        return mExampleColor;
-    }
-    public void setExampleColor(int exampleColor) {
-        mExampleColor = exampleColor;
-        invalidateTextPaintAndMeasurements();
-    }
-    public float getExampleDimension() {
-        return mExampleDimension;
-    }
-    public void setExampleDimension(float exampleDimension) {
-        mExampleDimension = exampleDimension;
-        invalidateTextPaintAndMeasurements();
-    }
-    public Drawable getExampleDrawable() {
-        return mExampleDrawable;
-    }
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
-    }*/
 }
