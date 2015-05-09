@@ -25,6 +25,8 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private Path mPath;
     private Canvas mCanvas;
     private Bitmap mBitmap;
+    private boolean drawing;
+    private int color;
 
     private final String LOG_TAG = customDrawItView.class.getSimpleName();
 
@@ -49,7 +51,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mPaint.setStrokeWidth(10); // by default
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
-
+        color = Color.BLACK;
         mPaint.setColor(Color.BLACK); // Black by default
         mPaint.setTextSize(40); // Big size by default TODO: text drawing
 
@@ -60,6 +62,8 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         //TODO: a onSizeChanged?
         mBitmap = Bitmap.createBitmap(720,720,Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
+
+        drawing = true; // by default
 
         invalidate();
     }
@@ -114,7 +118,15 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     }
 
     public void setPaintColor(int paintColor){
+        invalidate(); // TODO: no cal?
+        color = paintColor;
         mPaint.setColor(paintColor);
-        invalidate(); // TODO: no cal
+    }
+
+    public void setDrawing(boolean drawing) {
+        this.drawing = drawing;
+        if(!drawing)
+            mPaint.setColor(Color.WHITE);
+        else mPaint.setColor(color);
     }
 }

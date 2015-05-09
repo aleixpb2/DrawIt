@@ -31,6 +31,8 @@ public class MainActivity extends ActionBarActivity{
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
 
         pencilButton = (ImageButton) findViewById(R.id.pencil);
+        //pencilButton selected by default
+        //pencilButton.setPressed(true);
         geometricElemButton = (ImageButton) findViewById(R.id.geometricElem);
         colorButton = (ImageButton) findViewById(R.id.color);
         eraseButton = (ImageButton) findViewById(R.id.erase);
@@ -41,7 +43,9 @@ public class MainActivity extends ActionBarActivity{
         pencilButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                //pencilButton.setPressed(true);
+                //geometricElemButton.setPressed(false);
+                mCustomDrawItView.setDrawing(true);
             }
         });
 
@@ -50,6 +54,9 @@ public class MainActivity extends ActionBarActivity{
             public void onClick(View v) {
                 //mCustomDrawItView.setPaintColor(Color.BLUE);
                 //mCustomDrawItView.setPaintColor(Color.GREEN);
+                //pencilButton.setPressed(false);
+                //geometricElemButton.setPressed(true);
+                mCustomDrawItView.setDrawing(true);
             }
         });
 
@@ -63,7 +70,7 @@ public class MainActivity extends ActionBarActivity{
         eraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                mCustomDrawItView.setDrawing(false);
             }
         });
 
