@@ -5,10 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.view.View;
 
 
-public class customDrawItView extends LinearLayout {
+public class customDrawItView extends View {
     //private String mExampleString;
     //private int mExampleColor = Color.RED;
     //private float mExampleDimension = 0;
@@ -77,7 +77,8 @@ public class customDrawItView extends LinearLayout {
         mPaint.setColor(Color.BLACK); // Black by default
         mPaint.setTextSize(40); // Big size by default
 
-        invalidateTextPaintAndMeasurements();
+        invalidate();
+        //invalidateTextPaintAndMeasurements();
     }
 
 
@@ -164,3 +165,5 @@ public class customDrawItView extends LinearLayout {
         mExampleDrawable = exampleDrawable;
     }*/
 }
+
+//private class Point

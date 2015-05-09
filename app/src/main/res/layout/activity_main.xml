@@ -27,6 +27,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/customDrawItView"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/save"
+            android:id="@+id/save"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher"/>
+    </LinearLayout>
 </LinearLayout>
 
     <!-- Aixo anava al primer Linear Layout: no cal padding

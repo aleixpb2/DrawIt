@@ -1,19 +1,12 @@
 package com.aleix.drawit;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity{
@@ -21,9 +14,7 @@ public class MainActivity extends ActionBarActivity{
     private customDrawItView mCustomDrawItView;
     private ImageButton button1;
     private ImageButton button2;
-
-    private Paint mPaint;
-    //private Canvas c;
+    private ImageButton saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +25,12 @@ public class MainActivity extends ActionBarActivity{
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
         button1 = (ImageButton) findViewById(R.id.button1);
         button2 = (ImageButton) findViewById(R.id.button2);
+        saveButton = (ImageButton) findViewById(R.id.save);
 
-        //mCustomDrawItView = new customDrawItView(getApplicationContext());
-
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(Color.BLACK); // black by default
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mPaint.setColor(Color.GREEN); // green
                 mCustomDrawItView.setPaintColor(Color.GREEN);
 
             }
@@ -53,10 +39,27 @@ public class MainActivity extends ActionBarActivity{
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mPaint.setColor(Color.BLUE); // blue
                 mCustomDrawItView.setPaintColor(Color.BLUE);
             }
         });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // TODO:
+                /* Quan tens el file:
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                i.bitmap().compress(Bitmap.CompressFormat.PNG, 100, fos); //Comprimimos a png, con 100% de calidad y se guarda en el fos
+                fos.close();
+
+                MediaScannerConnection.scanFile(Context context, String[] path, null, null);
+                // context -> "getApplicationContext()" y el path es la ruta del fichero con el nombre incluido
+                */
+
+            }
+        });
+
         /* FI del setUp */
 
         //Bitmap bitmap = Bitmap.createBitmap(100,100, Bitmap.Config.ARGB_8888); // TODO: 512*512 default
