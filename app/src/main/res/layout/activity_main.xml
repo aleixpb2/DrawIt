@@ -14,13 +14,18 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher"
-            android:id="@+id/button1"/>
+            android:src="@mipmap/pencil"
+            android:id="@+id/pencil"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/abc_ic_menu_copy_mtrl_am_alpha"
-            android:id="@+id/button2"/>
+            android:src="@mipmap/circle"
+            android:id="@+id/circle"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/square"
+            android:id="@+id/square"/>
         </LinearLayout>
 
     <View style="@style/Divider"/>

@@ -169,5 +169,3 @@ public class customDrawItView extends View {
         mExampleDrawable = exampleDrawable;
     }*/
 }
-
-//private class Point

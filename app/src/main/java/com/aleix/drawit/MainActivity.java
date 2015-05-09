@@ -1,6 +1,5 @@
 package com.aleix.drawit;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -12,8 +11,10 @@ import android.widget.ImageButton;
 public class MainActivity extends ActionBarActivity{
 
     private customDrawItView mCustomDrawItView;
-    private ImageButton button1;
-    private ImageButton button2;
+    private ImageButton pencilButton;
+    private ImageButton circleButton;
+    private ImageButton squareButton;
+
     private ImageButton saveButton;
 
     @Override
@@ -23,25 +24,35 @@ public class MainActivity extends ActionBarActivity{
 
         // setUp();
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
-        button1 = (ImageButton) findViewById(R.id.button1);
-        button2 = (ImageButton) findViewById(R.id.button2);
+        pencilButton = (ImageButton) findViewById(R.id.pencil);
+        circleButton = (ImageButton) findViewById(R.id.circle);
+        squareButton = (ImageButton) findViewById(R.id.square);
+
         saveButton = (ImageButton) findViewById(R.id.save);
 
 
-        button1.setOnClickListener(new View.OnClickListener() {
+        pencilButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCustomDrawItView.setPaintColor(Color.GREEN);
-
+                //
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        circleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCustomDrawItView.setPaintColor(Color.BLUE);
+                //mCustomDrawItView.setPaintColor(Color.BLUE);
+                //mCustomDrawItView.setPaintColor(Color.GREEN);
             }
         });
+
+        squareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+            }
+        });
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
