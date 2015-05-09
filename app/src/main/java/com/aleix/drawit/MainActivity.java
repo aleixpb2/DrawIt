@@ -47,7 +47,7 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onClick(View v) {
 
-                // TODO:
+                // TODO: implementar save. Mostrar toast segons si guardat correctament o no
                 /* Quan tens el file:
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 i.bitmap().compress(Bitmap.CompressFormat.PNG, 100, fos); //Comprimimos a png, con 100% de calidad y se guarda en el fos

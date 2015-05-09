@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -18,6 +19,9 @@ public class customDrawItView extends View {
     //private float mTextWidth;
     //private float mTextHeight;
 
+    private Paint mPaint;
+    private final String LOG_TAG = customDrawItView.class.getSimpleName();
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
@@ -25,8 +29,6 @@ public class customDrawItView extends View {
         int size = width > height ? height : width; // minim
         setMeasuredDimension(size, size); // vista quadrada
     }
-
-    private Paint mPaint;
 
     // Constructors needed to allow the ADT to interact with the view
     public customDrawItView(Context context) {
@@ -105,8 +107,10 @@ public class customDrawItView extends View {
         //int paddingBottom = getPaddingBottom();
         int contentWidth = getWidth();// - paddingLeft - paddingRight;
         int contentHeight = getHeight();// - paddingTop - paddingBottom;
+        //Debug:
+        Log.i(LOG_TAG, "Painting:\nWidth = " + contentWidth + "\nHeight = " + contentHeight);
 
-        canvas.drawRect(1, 100, contentWidth-1, 200, mPaint);
+        canvas.drawRect(0, 100, contentWidth, 200, mPaint);
 
         canvas.drawCircle(0.0f, 0.0f, 100f, mPaint);
         canvas.drawCircle(contentWidth/2, 0.0f, 100f, mPaint);
@@ -133,7 +137,7 @@ public class customDrawItView extends View {
 
     public void setPaintColor(int paintColor){
         mPaint.setColor(paintColor);
-        invalidate();
+        invalidate(); // TODO: no cal
     }
 
     /*
