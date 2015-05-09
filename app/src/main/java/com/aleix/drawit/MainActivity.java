@@ -11,10 +11,15 @@ import android.widget.ImageButton;
 public class MainActivity extends ActionBarActivity{
 
     private customDrawItView mCustomDrawItView;
-    private ImageButton pencilButton;
-    private ImageButton circleButton;
-    private ImageButton colorButton;
 
+    private ImageButton pencilButton;
+    private ImageButton geometricElemButton;
+    private ImageButton colorButton;
+    private ImageButton eraseButton;
+    private ImageButton undoButton;
+    //private ImageButton deleteButton;
+
+    //private ImageButton newButton;
     private ImageButton saveButton;
 
     @Override
@@ -24,12 +29,14 @@ public class MainActivity extends ActionBarActivity{
 
         // setUp();
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
+
         pencilButton = (ImageButton) findViewById(R.id.pencil);
-        circleButton = (ImageButton) findViewById(R.id.circle);
+        geometricElemButton = (ImageButton) findViewById(R.id.geometricElem);
         colorButton = (ImageButton) findViewById(R.id.color);
+        eraseButton = (ImageButton) findViewById(R.id.erase);
+        undoButton = (ImageButton) findViewById(R.id.undo);
 
         saveButton = (ImageButton) findViewById(R.id.save);
-
 
         pencilButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,7 +45,7 @@ public class MainActivity extends ActionBarActivity{
             }
         });
 
-        circleButton.setOnClickListener(new View.OnClickListener() {
+        geometricElemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //mCustomDrawItView.setPaintColor(Color.BLUE);
@@ -52,6 +59,21 @@ public class MainActivity extends ActionBarActivity{
                 //
             }
         });
+
+        eraseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+            }
+        });
+
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+            }
+        });
+
 
 
         saveButton.setOnClickListener(new View.OnClickListener() {

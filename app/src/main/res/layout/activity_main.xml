@@ -20,13 +20,24 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/circle"
-            android:id="@+id/circle"/>
+            android:id="@+id/geometricElem"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="#ff000000"
             android:src="@drawable/abc_btn_check_to_on_mtrl_000"
             android:id="@+id/color"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/eraser"
+            android:id="@+id/erase"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/undo"
+            android:id="@+id/undo"/>
+
         </LinearLayout>
 
     <View style="@style/Divider"/>
@@ -49,12 +60,12 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/save"
-            android:id="@+id/save"/>
+            android:src="@mipmap/ic_launcher"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/save"
+            android:id="@+id/save"/>
     </LinearLayout>
 </LinearLayout>
 
