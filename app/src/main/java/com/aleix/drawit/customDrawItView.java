@@ -22,7 +22,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private Path mPath;
     private Canvas mCanvas;
     private Bitmap mBitmap;
-    private boolean drawing; // TODO: cal???
+    private boolean drawing;
     private int color;
     private ArrayList<Pair<Path, Paint>> pathsDrawn;
 
@@ -83,11 +83,9 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawBitmap(mBitmap, 0, 0, mCanvasPaint);
-        canvas.drawPath(mPath, mPaint);
         for(Pair p : pathsDrawn)
             canvas.drawPath( (Path) p.first, (Paint) p.second);
-
+        canvas.drawPath(mPath, mPaint);
         /*
         canvas.drawRect(0, 100, contentWidth, 200, mPaint);
         canvas.drawCircle(0.0f, 0.0f, 100f, mPaint);
@@ -147,9 +145,12 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         if(last == -1) return;
         Path pathToBeUndone = pathsDrawn.get(last).first;
         pathsDrawn.remove(last);
-        setDrawing(false); mPaint.setStrokeWidth(mPaint.getStrokeWidth() + 1);
+        boolean wasDrawing = drawing;
+        setDrawing(false);
+        mPaint.setStrokeWidth(mPaint.getStrokeWidth() + 1);
         mCanvas.drawPath(pathToBeUndone, mPaint);
-        setDrawing(true); mPaint.setStrokeWidth(mPaint.getStrokeWidth() - 1);
+        if(wasDrawing) setDrawing(true);
+        mPaint.setStrokeWidth(mPaint.getStrokeWidth() - 1);
         mPath.reset();
         invalidate();
     }
