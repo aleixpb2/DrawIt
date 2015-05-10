@@ -4,13 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 
 public class MainActivity extends ActionBarActivity{
@@ -122,34 +124,7 @@ public class MainActivity extends ActionBarActivity{
                       .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                           @Override
                           public void onClick(DialogInterface dialog, int which) {
-                              // TODO: implementar save. Mostrar toast segons si guardat correctament o no
-                              try {
-                                  mCustomDrawItView.setDrawingCacheEnabled(true);
-                                  Bitmap bitmap = mCustomDrawItView.getDrawingCache();
-                                  //File file = new File(getFilesDir(), "prova1");
-                                  //file.createNewFile();
-
-                                  //FileOutputStream fileOS = new FileOutputStream(file);
-                                  //bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOS);
-                                  //fileOS.close();
-                                  String s = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "prova1", "aaa");
-                                  //MediaScannerConnection.scanFile(getApplicationContext(), new String[]{getFilesDir() + "prova1"}, null, null);
-                                  if (s != null)
-                                      Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
-                                  else Toast.makeText(getApplicationContext(), "Error saving", Toast.LENGTH_SHORT).show();
-                                  mCustomDrawItView.destroyDrawingCache();
-
-                              } catch (Exception e) {
-                                  e.printStackTrace();
-                              }
-                /* Quan tens el file:
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                i.bitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);//png, 100% de calidad y se guarda en el fos
-                fos.close();
-
-                MediaScannerConnection.scanFile(Context context, String[] path, null, null);
-                // context -> "getApplicationContext()" y el path es la ruta del fichero con el nombre incluido
-                */
+                              saveImage(); // too much code here, better with this function
                           }
                       })
                       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -165,6 +140,42 @@ public class MainActivity extends ActionBarActivity{
         /* FI del setUp */
     }
 
+    private  void saveImage(){
+        // TODO: implementar save i mostrar toast
+        try {
+            mCustomDrawItView.setDrawingCacheEnabled(true);
+            Bitmap bitmap = mCustomDrawItView.getDrawingCache();
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File dir = new File(path + "/DrawIt");
+            if(!dir.exists()) dir.mkdirs();
+            long date = System.currentTimeMillis();
+            File file = new File(dir, String.valueOf(date) + ".png");
+
+            //file.createNewFile();
+
+            FileOutputStream fileOS = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOS);
+            fileOS.close();
+            //String s = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "prova1", "aaa");
+            //MediaScannerConnection.scanFile(getApplicationContext(), new String[]{getFilesDir() + "prova1"}, null, null);
+            //if (s != null) Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+            //else Toast.makeText(getApplicationContext(), "Error saving", Toast.LENGTH_SHORT).show();
+            mCustomDrawItView.destroyDrawingCache();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+        }
+                /* Quan tens el file:
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                i.bitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);//png, 100% de calidad y se guarda en el fos
+                fos.close();
+
+                MediaScannerConnection.scanFile(Context context, String[] path, null, null);
+                // context -> "getApplicationContext()" y el path es la ruta del fichero con el nombre incluido
+                */
+    }
 
 
     @Override

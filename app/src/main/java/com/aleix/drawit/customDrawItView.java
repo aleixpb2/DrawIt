@@ -13,19 +13,12 @@ import android.view.View;
 
 
 public class customDrawItView extends View/* implements View.OnTouchListener */{
-    //private String mExampleString;
-    //private int mExampleColor = Color.RED;
-    //private float mExampleDimension = 0;
-    //private Drawable mExampleDrawable;
-    //private TextPaint mTextPaint;
-    //private float mTextWidth;
-    //private float mTextHeight;
 
     private Paint mPaint, mCanvasPaint;
     private Path mPath;
     private Canvas mCanvas;
     private Bitmap mBitmap;
-    private boolean drawing;
+    private boolean drawing; // TODO: cal???
     private int color;
 
     private final String LOG_TAG = customDrawItView.class.getSimpleName();
@@ -44,7 +37,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         init(attrs, defStyle);
     }
 
-    private void init(AttributeSet attrs, int defStyle) { //TODO: es setupDrawing()
+    private void init(AttributeSet attrs, int defStyle) {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         mPaint.setStyle(Paint.Style.STROKE);
@@ -73,7 +66,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
         int size = width > height ? height : width; // minim
-        setMeasuredDimension(size, size); // vista quadrada
+        setMeasuredDimension(size, size); // square view
     }
 
     @Override
