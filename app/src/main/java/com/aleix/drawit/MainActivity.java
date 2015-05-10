@@ -32,8 +32,9 @@ public class MainActivity extends ActionBarActivity{
     private ImageButton newImageButton;
     private ImageButton saveButton;
 
-    String[] resolutions;
-    String resolution;
+    private String[] resolutions;
+    private String resolution;
+    private String[] formats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,9 @@ public class MainActivity extends ActionBarActivity{
         setContentView(R.layout.activity_main);
 
         resolutions = getResources().getStringArray(R.array.resolutions);
-        resolution = resolutions[1]; /*512*512*/
+        resolution = resolutions[1]; /*512*512*/ // Not needed...
+
+        formats = getResources().getStringArray(R.array.formats);
 
         // setUp();
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
@@ -106,7 +109,7 @@ public class MainActivity extends ActionBarActivity{
                 resolution = resolutions[1]; //512*512
                 Log.d("Default res", resolution);
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                dialog.setTitle("Choose a resolution. The current drawing will be deleted")
+                dialog.setTitle("Choose the new resolution. This drawing will be deleted")
                         .setSingleChoiceItems(resolutions, 1 /*512*512*/, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -133,36 +136,44 @@ public class MainActivity extends ActionBarActivity{
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
+
+            String format = formats[0]; /*png*/
             @Override
             public void onClick(View v) {
-
+                Log.d("Default format", format);
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                dialog.setTitle("Save the drawing")
-                      .setMessage("Save this drawing to the gallery")
-                      .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                          @Override
-                          public void onClick(DialogInterface dialog, int which) {
-                              boolean saved = saveImage(); // too much code here, better with this function
-                              if (saved)
-                                  Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
-                              else
-                                  Toast.makeText(getApplicationContext(), "Error saving", Toast.LENGTH_SHORT).show();
-                          }
-                      })
-                      .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                          @Override
-                          public void onClick(DialogInterface dialog, int which) {
-                              dialog.cancel();
-                          }
-                      })
-                      .show();
+                dialog.setTitle("Save this drawing to the gallery. Choose a format")
+                        .setSingleChoiceItems(formats, 0 /*png*/, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                format = formats[which];
+                                Log.d("Format clicked", format);
+                            }
+                        })
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                boolean saved = saveImage(format); // too much code here, better with this function
+                                if (saved)
+                                    Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(getApplicationContext(), "Error saving", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
             }
         });
 
         /* Fi del setUp */
     }
 
-    private  boolean saveImage(){
+    private  boolean saveImage(String format){ // png o jpg
         final String LOG_TAG = "saveImage";
         boolean writable = Environment.MEDIA_MOUNTED.equals(
                 Environment.getExternalStorageState());
@@ -188,10 +199,12 @@ public class MainActivity extends ActionBarActivity{
         }
 
         String name = String.valueOf(System.currentTimeMillis());
-        File file = new File(directory, name + ".png");
+        File file = new File(directory, name + "." + format);
         try{
             FileOutputStream fileOS = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOS);
+            Bitmap.CompressFormat compressFormat = format.equals("png")?
+                    Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG;
+            bitmap.compress(compressFormat, 100, fileOS);
             fileOS.flush();
             fileOS.close();
             MediaScannerConnection.scanFile(getApplicationContext(), new String[]{file.getAbsolutePath()}, null, null);
@@ -203,6 +216,28 @@ public class MainActivity extends ActionBarActivity{
         Log.i(LOG_TAG, "Image saved to" + file.toString());
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        // Ask to leave
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+        dialog.setTitle("Really exit?")
+                .setMessage("The drawing will be deleted")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

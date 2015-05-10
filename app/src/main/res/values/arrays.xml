@@ -6,5 +6,9 @@
         <item>256*256</item>
         <item>128*128</item>
     </string-array>
+    <string-array name="formats">
+        <item>png</item>
+        <item>jpg</item>
+    </string-array>
 
 </resources>
