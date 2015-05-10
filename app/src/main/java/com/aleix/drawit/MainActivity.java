@@ -75,6 +75,33 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 //
+                final String[] resolutions = getResources().getStringArray(R.array.resolutions);
+                Log.d("Resol", resolutions.toString());
+                String resolution = resolutions[1]; /*512*512*/
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Save")
+                        .setSingleChoiceItems(resolutions, 1 /*512*512*/, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //resolution = resolutions[which];
+                                Log.d("Res", resolutions[which]);
+                            }
+                        })
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+
+                //
             }
         });
 
@@ -104,7 +131,6 @@ public class MainActivity extends ActionBarActivity{
                           @Override
                           public void onClick(DialogInterface dialog, int which) {
                               mCustomDrawItView.newImage();
-                              dialog.dismiss();
                           }
                       })
                       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -128,7 +154,7 @@ public class MainActivity extends ActionBarActivity{
                           @Override
                           public void onClick(DialogInterface dialog, int which) {
                               boolean saved = saveImage(); // too much code here, better with this function
-                              if(saved)
+                              if (saved)
                                   Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
                               else
                                   Toast.makeText(getApplicationContext(), "Error saving", Toast.LENGTH_SHORT).show();
