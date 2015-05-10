@@ -1,11 +1,16 @@
 package com.aleix.drawit;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity{
@@ -19,7 +24,7 @@ public class MainActivity extends ActionBarActivity{
     private ImageButton undoButton;
     //private ImageButton deleteButton;
 
-    //private ImageButton newButton;
+    private ImageButton newButton;
     private ImageButton saveButton;
 
     @Override
@@ -38,6 +43,7 @@ public class MainActivity extends ActionBarActivity{
         eraseButton = (ImageButton) findViewById(R.id.erase);
         undoButton = (ImageButton) findViewById(R.id.undo);
 
+        newButton = (ImageButton) findViewById(R.id.newImage);
         saveButton = (ImageButton) findViewById(R.id.save);
 
         pencilButton.setOnClickListener(new View.OnClickListener() {
@@ -83,32 +89,81 @@ public class MainActivity extends ActionBarActivity{
 
 
 
+        newButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setTitle("Draw a new drawing")
+                      .setMessage("The current drawing will be deleted")
+                      .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              mCustomDrawItView.newImage();
+                              dialog.dismiss();
+                          }
+                      })
+                      .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              dialog.cancel();
+                          }
+                      })
+                      .show();
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                // TODO: implementar save. Mostrar toast segons si guardat correctament o no
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setTitle("Save the drawing")
+                      .setMessage("Save this drawing to the gallery")
+                      .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              // TODO: implementar save. Mostrar toast segons si guardat correctament o no
+                              try {
+                                  mCustomDrawItView.setDrawingCacheEnabled(true);
+                                  Bitmap bitmap = mCustomDrawItView.getDrawingCache();
+                                  //File file = new File(getFilesDir(), "prova1");
+                                  //file.createNewFile();
+
+                                  //FileOutputStream fileOS = new FileOutputStream(file);
+                                  //bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOS);
+                                  //fileOS.close();
+                                  String s = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "prova1", "aaa");
+                                  //MediaScannerConnection.scanFile(getApplicationContext(), new String[]{getFilesDir() + "prova1"}, null, null);
+                                  if (s != null)
+                                      Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+                                  else Toast.makeText(getApplicationContext(), "Error saving", Toast.LENGTH_SHORT).show();
+                                  mCustomDrawItView.destroyDrawingCache();
+
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
                 /* Quan tens el file:
                 FileOutputStream fos = new FileOutputStream(pictureFile);
-                i.bitmap().compress(Bitmap.CompressFormat.PNG, 100, fos); //Comprimimos a png, con 100% de calidad y se guarda en el fos
+                i.bitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);//png, 100% de calidad y se guarda en el fos
                 fos.close();
 
                 MediaScannerConnection.scanFile(Context context, String[] path, null, null);
                 // context -> "getApplicationContext()" y el path es la ruta del fichero con el nombre incluido
                 */
-
+                          }
+                      })
+                      .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              dialog.cancel();
+                          }
+                      })
+                      .show();
             }
         });
 
         /* FI del setUp */
-
-        //Bitmap bitmap = Bitmap.createBitmap(100,100, Bitmap.Config.ARGB_8888); // TODO: 512*512 default
-        //c = new Canvas(bitmap);
-        //c.drawRGB(255, 0, 0);
-        //c.drawPaint(mPaint);
-
     }
-
 
 
 

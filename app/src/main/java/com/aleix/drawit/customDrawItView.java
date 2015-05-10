@@ -123,6 +123,13 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mPaint.setColor(paintColor);
     }
 
+    public void newImage(){
+        mCanvas.drawColor(Color.WHITE);
+        drawing = true; // we don't want to start a drawing erasing!
+        mPaint.setColor(color);
+        invalidate();
+    }
+
     public void setDrawing(boolean drawing) {
         this.drawing = drawing;
         if(!drawing)
