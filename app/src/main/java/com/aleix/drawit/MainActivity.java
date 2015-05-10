@@ -35,6 +35,7 @@ public class MainActivity extends ActionBarActivity{
     private String[] resolutions;
     private String resolution;
     private String[] formats;
+    private String format;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class MainActivity extends ActionBarActivity{
         resolution = resolutions[1]; /*512*512*/ // Not needed...
 
         formats = getResources().getStringArray(R.array.formats);
+        format = formats[0]; /*png*/  // Not needed...
 
         // setUp();
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
@@ -136,10 +138,9 @@ public class MainActivity extends ActionBarActivity{
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
-
-            String format = formats[0]; /*png*/
             @Override
             public void onClick(View v) {
+                format = formats[0]; /*png*/
                 Log.d("Default format", format);
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
                 dialog.setTitle("Save this drawing to the gallery. Choose a format")

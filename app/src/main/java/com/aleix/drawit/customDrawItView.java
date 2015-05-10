@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class customDrawItView extends View/* implements View.OnTouchListener */{
 
-    private Paint mPaint, mCanvasPaint;
+    private Paint mPaint;
     private Path mPath;
     private Canvas mCanvas;
     private Bitmap mBitmap;
@@ -44,6 +44,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     private void init(AttributeSet attrs, int defStyle) {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setDither(true);
 
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(10); // by default
@@ -54,7 +55,6 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mPaint.setTextSize(40); // Big size by default TODO: text drawing
 
         mPath = new Path();
-        mCanvasPaint = new Paint(Paint.DITHER_FLAG);
 
         pathsDrawn = new ArrayList<>();
 
@@ -108,6 +108,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
                 mPath.lineTo(x, y);
                 break;
             case MotionEvent.ACTION_UP: // draw it to the canvas
+                /*if(mPath.isEmpty()){
+                    Log.d(LOG_TAG, "empty path");
+                }*/
+                mPath.lineTo(x+0.5f,y+0.5f); // DOT
                 mCanvas.drawPath(mPath, mPaint);
                 pathsDrawn.add(
                        new Pair<>(new Path(mPath), new Paint(mPaint)) );
