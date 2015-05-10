@@ -8,8 +8,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.ArrayList;
 
 
 public class customDrawItView extends View/* implements View.OnTouchListener */{
@@ -20,6 +24,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private Bitmap mBitmap;
     private boolean drawing; // TODO: cal???
     private int color;
+    private ArrayList<Pair<Path, Paint>> pathsDrawn;
 
     private final String LOG_TAG = customDrawItView.class.getSimpleName();
 
@@ -51,6 +56,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mPath = new Path();
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
 
+        pathsDrawn = new ArrayList<>();
 
         //TODO: a onSizeChanged?
         // 720 is the maximum resolution, but 512 the default (when saving the bitmap)
@@ -58,6 +64,11 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mCanvas = new Canvas(mBitmap);
 
         drawing = true; // by default
+
+        int contentWidth = getWidth();
+        int contentHeight = getHeight();
+        //Debug:
+        Log.d(LOG_TAG, "Painting:\nWidth = " + contentWidth + "\nHeight = " + contentHeight);
 
         invalidate();
     }
@@ -72,14 +83,11 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //super.onDraw(canvas);
-        // TODO: consider storing these as member variables to reduce allocations per draw cycle.
-        int contentWidth = getWidth();
-        int contentHeight = getHeight();
-        //Debug:
-        //Log.i(LOG_TAG, "Painting:\nWidth = " + contentWidth + "\nHeight = " + contentHeight);
         canvas.drawBitmap(mBitmap, 0, 0, mCanvasPaint);
         canvas.drawPath(mPath, mPaint);
+        for(Pair p : pathsDrawn)
+            canvas.drawPath( (Path) p.first, (Paint) p.second);
+
         /*
         canvas.drawRect(0, 100, contentWidth, 200, mPaint);
         canvas.drawCircle(0.0f, 0.0f, 100f, mPaint);
@@ -99,10 +107,12 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
                 mPath.moveTo(x,y);
                 break;
             case MotionEvent.ACTION_MOVE: // draw the path
-                mPath.lineTo(x,y);
+                mPath.lineTo(x, y);
                 break;
             case MotionEvent.ACTION_UP: // draw it to the canvas
                 mCanvas.drawPath(mPath, mPaint);
+                pathsDrawn.add(
+                       new Pair<>(new Path(mPath), new Paint(mPaint)) );
                 mPath.reset();
                 break;
             default: return false; // Path not drawn
@@ -121,6 +131,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mCanvas.drawColor(Color.WHITE);
         drawing = true; // we don't want to start a drawing erasing!
         mPaint.setColor(color);
+        pathsDrawn.clear();
         invalidate();
     }
 
@@ -129,5 +140,17 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         if(!drawing)
             mPaint.setColor(Color.WHITE);
         else mPaint.setColor(color);
+    }
+
+    public void undo(){
+        int last = pathsDrawn.size() - 1;
+        if(last == -1) return;
+        Path pathToBeUndone = pathsDrawn.get(last).first;
+        pathsDrawn.remove(last);
+        setDrawing(false); mPaint.setStrokeWidth(mPaint.getStrokeWidth() + 1);
+        mCanvas.drawPath(pathToBeUndone, mPaint);
+        setDrawing(true); mPaint.setStrokeWidth(mPaint.getStrokeWidth() - 1);
+        mPath.reset();
+        invalidate();
     }
 }

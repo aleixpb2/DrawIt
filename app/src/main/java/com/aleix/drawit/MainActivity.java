@@ -29,13 +29,19 @@ public class MainActivity extends ActionBarActivity{
     private ImageButton undoButton;
     //private ImageButton deleteButton;
 
-    private ImageButton newButton;
+    private ImageButton newImageButton;
     private ImageButton saveButton;
+
+    String[] resolutions;
+    String resolution;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        resolutions = getResources().getStringArray(R.array.resolutions);
+        resolution = resolutions[1]; /*512*512*/
 
         // setUp();
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
@@ -48,7 +54,7 @@ public class MainActivity extends ActionBarActivity{
         eraseButton = (ImageButton) findViewById(R.id.erase);
         undoButton = (ImageButton) findViewById(R.id.undo);
 
-        newButton = (ImageButton) findViewById(R.id.newImage);
+        newImageButton = (ImageButton) findViewById(R.id.newImage);
         saveButton = (ImageButton) findViewById(R.id.save);
 
         pencilButton.setOnClickListener(new View.OnClickListener() {
@@ -75,33 +81,6 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 //
-                final String[] resolutions = getResources().getStringArray(R.array.resolutions);
-                Log.d("Resol", resolutions.toString());
-                String resolution = resolutions[1]; /*512*512*/
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Save")
-                        .setSingleChoiceItems(resolutions, 1 /*512*512*/, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //resolution = resolutions[which];
-                                Log.d("Res", resolutions[which]);
-                            }
-                        })
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .show();
-
-                //
             }
         });
 
@@ -115,31 +94,41 @@ public class MainActivity extends ActionBarActivity{
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                mCustomDrawItView.undo();
             }
         });
 
+        // Bottom buttons:
 
-
-        newButton.setOnClickListener(new View.OnClickListener() {
+        newImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resolution = resolutions[1]; //512*512
+                Log.d("Default res", resolution);
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                dialog.setTitle("Draw a new drawing")
-                      .setMessage("The current drawing will be deleted")
-                      .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                          @Override
-                          public void onClick(DialogInterface dialog, int which) {
-                              mCustomDrawItView.newImage();
-                          }
-                      })
-                      .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                          @Override
-                          public void onClick(DialogInterface dialog, int which) {
-                              dialog.cancel();
-                          }
-                      })
-                      .show();
+                dialog.setTitle("Choose a resolution. The current drawing will be deleted")
+                        .setSingleChoiceItems(resolutions, 1 /*512*512*/, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                resolution = resolutions[which];
+                                Log.d("Res. clicked", resolution);
+                            }
+                        })
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("Final resolution", resolution);
+                                mCustomDrawItView.newImage();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+                //****   .setMessage("The current drawing will be deleted")
             }
         });
 
@@ -174,7 +163,7 @@ public class MainActivity extends ActionBarActivity{
     }
 
     private  boolean saveImage(){
-        String LOG_TAG = "saveImage";
+        final String LOG_TAG = "saveImage";
         boolean writable = Environment.MEDIA_MOUNTED.equals(
                 Environment.getExternalStorageState());
         if(!writable) {
@@ -184,7 +173,11 @@ public class MainActivity extends ActionBarActivity{
         // writable:
         mCustomDrawItView.setDrawingCacheEnabled(true);
         Bitmap bitmap = mCustomDrawItView.getDrawingCache();
-        bitmap = Bitmap.createScaledBitmap(bitmap, 512, 512, false); // 512*512 default
+        // Resolution:
+        String resString = "" + resolution.charAt(0) + resolution.charAt(1) + resolution.charAt(2);
+        int res = Integer.parseInt(resString);
+        Log.d(LOG_TAG, "Resolution: " + res + "*" + res);
+        bitmap = Bitmap.createScaledBitmap(bitmap, res, res, false);
         mCustomDrawItView.destroyDrawingCache();
 
         File directory = new File
