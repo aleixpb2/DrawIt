@@ -53,6 +53,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
 
         //TODO: a onSizeChanged?
+        // 720 is the maximum resolution, but 512 the default (when saving the bitmap)
         mBitmap = Bitmap.createBitmap(720,720,Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
 
