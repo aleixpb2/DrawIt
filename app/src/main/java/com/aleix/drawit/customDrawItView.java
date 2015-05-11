@@ -55,13 +55,12 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         color = Color.BLACK;
         mPaint.setColor(Color.BLACK); // Black by default
-        mPaint.setTextSize(40); // Big size by default TODO: text drawing
+        mPaint.setTextSize(40); // not needed...
 
         mPath = new Path();
 
         pathsDrawn = new ArrayList<>();
 
-        //TODO: a onSizeChanged?
         // 720 is the maximum resolution, but 512 the default (when saving the bitmap)
         Bitmap mBitmap = Bitmap.createBitmap(720,720,Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
@@ -176,10 +175,18 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         else mPaint.setColor(color);
     }
 
+    public boolean getDrawing(){
+        return drawing;
+    }
+
     public void setPencilActive(){
         pencilActive = true;
         mPaint.setStyle(Paint.Style.STROKE);
         setDrawing(true);
+    }
+
+    public boolean getPencilActive(){
+        return pencilActive;
     }
 
     public void setGeoElemActive(GeometricElementsFragment.GeoElement elem){

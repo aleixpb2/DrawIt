@@ -16,22 +16,26 @@
             android:layout_height="match_parent"
             android:src="@mipmap/pencil"
             android:id="@+id/pencil"/>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"></Space>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/circle"
             android:id="@+id/geometricElem"/>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"></Space>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="#ff000000"
             android:src="@drawable/abc_btn_check_to_on_mtrl_000"
             android:id="@+id/color"/>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"></Space>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/eraser"
             android:id="@+id/erase"/>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"></Space>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ public class MainActivity extends ActionBarActivity
                           implements GeometricElementsFragment.GeometricElementsListener{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private final String colorDisabled = "#ffbbbbbb";
 
     private customDrawItView mCustomDrawItView;
 
@@ -77,22 +80,27 @@ public class MainActivity extends ActionBarActivity
         format = formats[0]; /*png*/  // Not needed...
 
         chosenElement = GeometricElementsFragment.GeoElement.Circle;
+
         setUpBitmaps();
 
-        // setUp();
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
 
         pencilButton = (ImageButton) findViewById(R.id.pencil);
         //pencilButton selected by default
-        //pencilButton.setPressed(true);
+        pencilButton.setBackgroundColor(Color.GRAY);
         geometricElemButton = (ImageButton) findViewById(R.id.geometricElem);
+        geometricElemButton.setBackgroundColor(Color.parseColor(colorDisabled));
         colorButton = (ImageButton) findViewById(R.id.color);
         eraseButton = (ImageButton) findViewById(R.id.erase);
+        eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
         undoButton = (ImageButton) findViewById(R.id.undo);
+        undoButton.setBackgroundColor(Color.parseColor(colorDisabled));
 
         saveButton = (ImageButton) findViewById(R.id.save);
         //brushButton = (ImageButton) findViewById();
         newImageButton = (ImageButton) findViewById(R.id.newImage);
+
+        setUpOnTouchListeners();
 
         pencilButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,16 +108,18 @@ public class MainActivity extends ActionBarActivity
                 //pencilButton.setPressed(true);
                 //geometricElemButton.setPressed(false);
                 mCustomDrawItView.setPencilActive();
+                geometricElemButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                pencilButton.setBackgroundColor(Color.GRAY);
             }
         });
 
         geometricElemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mCustomDrawItView.setPaintColor(Color.BLUE);
-                //mCustomDrawItView.setPaintColor(Color.GREEN);
-                //pencilButton.setPressed(false);
-                //geometricElemButton.setPressed(true);
+                pencilButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                geometricElemButton.setBackgroundColor(Color.GRAY);
 
                 GeometricElementsFragment dialog = new GeometricElementsFragment();
                 dialog.show(getFragmentManager(), "dialogGeom");
@@ -128,6 +138,9 @@ public class MainActivity extends ActionBarActivity
             public void onClick(View v) {
                 mCustomDrawItView.setPencilActive(); // erase in pencil mode
                 mCustomDrawItView.setDrawing(false);
+                pencilButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                geometricElemButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                eraseButton.setBackgroundColor(Color.GRAY);
             }
         });
 
@@ -211,6 +224,7 @@ public class MainActivity extends ActionBarActivity
         /* Fi del setUp */
     }
 
+
     private  boolean saveImage(String format){ // png o jpg
         final String LOG_TAG = "saveImage";
         boolean writable = Environment.MEDIA_MOUNTED.equals(
@@ -260,6 +274,54 @@ public class MainActivity extends ActionBarActivity
         square = BitmapFactory.decodeResource(getResources(), R.mipmap.square);
         rectangle = BitmapFactory.decodeResource(getResources(), R.mipmap.rectangle);
         triangle = BitmapFactory.decodeResource(getResources(), R.mipmap.triangle);
+    }
+
+    private void setUpOnTouchListeners() {
+        pencilButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    pencilButton.setBackgroundColor(Color.GRAY);
+                }
+                return false;
+            }
+        });
+        geometricElemButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    geometricElemButton.setBackgroundColor(Color.GRAY);
+                }
+                return false;
+            }
+        });
+        colorButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    colorButton.setBackgroundColor(Color.GRAY);
+                }
+                return false;
+            }
+        });
+        eraseButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    eraseButton.setBackgroundColor(Color.GRAY);
+                }
+                return false;
+            }
+        });
+        undoButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    undoButton.setBackgroundColor(Color.GRAY);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
