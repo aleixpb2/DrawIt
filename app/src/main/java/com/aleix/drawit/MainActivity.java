@@ -3,6 +3,7 @@ package com.aleix.drawit;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,7 +19,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends ActionBarActivity
+                          implements GeometricElementsFragment.GeometricElementsListener{
+
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private customDrawItView mCustomDrawItView;
 
@@ -27,15 +31,42 @@ public class MainActivity extends ActionBarActivity{
     private ImageButton colorButton;
     private ImageButton eraseButton;
     private ImageButton undoButton;
-    //private ImageButton deleteButton;
 
-    private ImageButton newImageButton;
     private ImageButton saveButton;
+    //private ImageButton brushButton;
+    private ImageButton newImageButton;
 
     private String[] resolutions;
     private String resolution;
     private String[] formats;
     private String format;
+
+    private GeometricElementsFragment.GeoElement chosen;
+
+    // GeometricElementsFragment interface implementation:
+    @Override
+    public void onElemClick(GeometricElementsFragment.GeoElement element) {
+        Log.d(LOG_TAG, "onElemClick: " + element.toString());
+        chosen = element;
+        switch(chosen){
+            case Circle:
+                geometricElemButton.setImageBitmap(
+                        BitmapFactory.decodeResource(getResources(), R.mipmap.circle));
+                break;
+            case Square:
+                geometricElemButton.setImageBitmap(
+                        BitmapFactory.decodeResource(getResources(), R.mipmap.square));
+                break;
+            case Rectangle:
+                geometricElemButton.setImageBitmap(
+                        BitmapFactory.decodeResource(getResources(), R.mipmap.square));
+                break;
+            case Triangle:
+                geometricElemButton.setImageBitmap(
+                        BitmapFactory.decodeResource(getResources(), R.mipmap.square));
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +75,10 @@ public class MainActivity extends ActionBarActivity{
 
         resolutions = getResources().getStringArray(R.array.resolutions);
         resolution = resolutions[1]; /*512*512*/ // Not needed...
-
         formats = getResources().getStringArray(R.array.formats);
         format = formats[0]; /*png*/  // Not needed...
+
+        chosen = GeometricElementsFragment.GeoElement.Circle;
 
         // setUp();
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
@@ -59,8 +91,9 @@ public class MainActivity extends ActionBarActivity{
         eraseButton = (ImageButton) findViewById(R.id.erase);
         undoButton = (ImageButton) findViewById(R.id.undo);
 
-        newImageButton = (ImageButton) findViewById(R.id.newImage);
         saveButton = (ImageButton) findViewById(R.id.save);
+        //brushButton = (ImageButton) findViewById();
+        newImageButton = (ImageButton) findViewById(R.id.newImage);
 
         pencilButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +112,9 @@ public class MainActivity extends ActionBarActivity{
                 //pencilButton.setPressed(false);
                 //geometricElemButton.setPressed(true);
                 mCustomDrawItView.setDrawing(true);
+
+                GeometricElementsFragment dialog = new GeometricElementsFragment();
+                dialog.show(getFragmentManager(), "dialogGeom");
             }
         });
 
@@ -104,38 +140,6 @@ public class MainActivity extends ActionBarActivity{
         });
 
         // Bottom buttons:
-
-        newImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resolution = resolutions[1]; //512*512
-                Log.d("Default res", resolution);
-                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                dialog.setTitle("Choose the new resolution. This drawing will be deleted")
-                        .setSingleChoiceItems(resolutions, 1 /*512*512*/, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                resolution = resolutions[which];
-                                Log.d("Res. clicked", resolution);
-                            }
-                        })
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d("Final resolution", resolution);
-                                mCustomDrawItView.newImage();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .show();
-                //****   .setMessage("The current drawing will be deleted")
-            }
-        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +172,40 @@ public class MainActivity extends ActionBarActivity{
                             }
                         })
                         .show();
+            }
+        });
+
+        //brushButton.setOnClickListener...
+
+        newImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resolution = resolutions[1]; //512*512
+                Log.d("Default res", resolution);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setTitle("Choose the new resolution. This drawing will be deleted")
+                        .setSingleChoiceItems(resolutions, 1 /*512*512*/, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                resolution = resolutions[which];
+                                Log.d("Res. clicked", resolution);
+                            }
+                        })
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("Final resolution", resolution);
+                                mCustomDrawItView.newImage();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+                //****   .setMessage("The current drawing will be deleted")
             }
         });
 
