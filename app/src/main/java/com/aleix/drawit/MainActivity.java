@@ -41,15 +41,16 @@ public class MainActivity extends ActionBarActivity
     private String[] formats;
     private String format;
 
-    private GeometricElementsFragment.GeoElement chosen;
+    private GeometricElementsFragment.GeoElement chosenElement;
     private Bitmap circle, square, rectangle, triangle;
 
     // GeometricElementsFragment interface implementation:
     @Override
     public void onElemClick(GeometricElementsFragment.GeoElement element) {
         Log.d(LOG_TAG, "onElemClick: " + element.toString());
-        chosen = element;
-        switch(chosen){
+        chosenElement = element;
+        mCustomDrawItView.setGeoElemActive(chosenElement);
+        switch(chosenElement){
             case Circle:
                 geometricElemButton.setImageBitmap(circle);
                 break;
@@ -75,7 +76,7 @@ public class MainActivity extends ActionBarActivity
         formats = getResources().getStringArray(R.array.formats);
         format = formats[0]; /*png*/  // Not needed...
 
-        chosen = GeometricElementsFragment.GeoElement.Circle;
+        chosenElement = GeometricElementsFragment.GeoElement.Circle;
         setUpBitmaps();
 
         // setUp();
@@ -98,7 +99,7 @@ public class MainActivity extends ActionBarActivity
             public void onClick(View v) {
                 //pencilButton.setPressed(true);
                 //geometricElemButton.setPressed(false);
-                mCustomDrawItView.setDrawing(true);
+                mCustomDrawItView.setPencilActive();
             }
         });
 
@@ -109,7 +110,6 @@ public class MainActivity extends ActionBarActivity
                 //mCustomDrawItView.setPaintColor(Color.GREEN);
                 //pencilButton.setPressed(false);
                 //geometricElemButton.setPressed(true);
-                mCustomDrawItView.setDrawing(true);
 
                 GeometricElementsFragment dialog = new GeometricElementsFragment();
                 dialog.show(getFragmentManager(), "dialogGeom");
@@ -126,6 +126,7 @@ public class MainActivity extends ActionBarActivity
         eraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mCustomDrawItView.setPencilActive(); // erase in pencil mode
                 mCustomDrawItView.setDrawing(false);
             }
         });

@@ -24,6 +24,8 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private boolean drawing;
     private boolean pencilActive;
 
+    private GeometricElementsFragment.GeoElement chosenElement;
+
     private int color;
     private ArrayList<Pair<Path, Paint>> pathsDrawn;
 
@@ -65,6 +67,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mCanvas = new Canvas(mBitmap);
 
         drawing = true; // by default
+        pencilActive = true;
 
         int contentWidth = getWidth();
         int contentHeight = getHeight();
@@ -104,18 +107,46 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         switch (action){
             case MotionEvent.ACTION_DOWN: // pressed
                 mPath.moveTo(x,y);
+                if(!pencilActive) {
+                    mPath.moveTo(x, y);
+                    switch (chosenElement){
+                        case Circle:
+                            mPath.addCircle(x,y, 25f,Path.Direction.CW);
+                            break;
+                        case Square:
+                            mPath.addRect(x -25f, y - 25f, x + 25f, y + 25f, Path.Direction.CW);
+                            break;
+                        case Rectangle:
+                            mPath.addRect(x -25f, y - 15f, x + 25f, y + 15f, Path.Direction.CW);
+                            break;
+                        case Triangle:
+                            // lets review a bit of geometry (High School/Baccalaureat):
+                            // in an equilateral triangle, h = (sqrt(3)*x)/2 where x is the side
+                            // and the center is at h/3 from the bottom side
+                            // (circumcenter, incenter, orthocenter and centroid at the same point)
+                            float side = 50f;
+                            float h = (float) ((Math.sqrt(3)*side)/2f);
+                            float leftbottomx = x - 0.5f*side;
+                            float leftbottomy = y + h/3f;
+                            float rightbottomx = x + 0.5f*side;
+                            float rightbottomy = y+ h/3f;
+                            float topx = x;
+                            float topy = y - (2f*h)/3f;
+                            mPath.moveTo(leftbottomx, leftbottomy);
+                            mPath.lineTo(rightbottomx, rightbottomy);
+                            mPath.lineTo(topx, topy);
+                            mPath.lineTo(leftbottomx, leftbottomy);
+                            break;
+                    }
+                }
                 break;
             case MotionEvent.ACTION_MOVE: // draw the path
-                mPath.lineTo(x, y);
+                if(pencilActive) mPath.lineTo(x, y);
                 break;
             case MotionEvent.ACTION_UP: // draw it to the canvas
-                /*if(mPath.isEmpty()){
-                    Log.d(LOG_TAG, "empty path");
-                }*/
-                mPath.lineTo(x+0.5f,y+0.5f); // DOT
-                mCanvas.drawPath(mPath, mPaint);
-                pathsDrawn.add(
-                       new Pair<>(new Path(mPath), new Paint(mPaint)) );
+                if(pencilActive) mPath.lineTo(x + 0.5f, y + 0.5f); // DOT
+                    //mCanvas.drawPath(mPath, mPaint);
+                pathsDrawn.add(new Pair<>(new Path(mPath), new Paint(mPaint)));
                 mPath.reset();
                 break;
             default: return false; // Path not drawn
@@ -145,17 +176,32 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         else mPaint.setColor(color);
     }
 
+    public void setPencilActive(){
+        pencilActive = true;
+        mPaint.setStyle(Paint.Style.STROKE);
+        setDrawing(true);
+    }
+
+    public void setGeoElemActive(GeometricElementsFragment.GeoElement elem){
+        pencilActive = false;
+        mPaint.setStyle(Paint.Style.FILL);
+        setDrawing(true);
+        chosenElement = elem;
+    }
+
     public void undo(){
         int last = pathsDrawn.size() - 1;
         if(last == -1) return;
-        Path pathToBeUndone = pathsDrawn.get(last).first;
+        //Path pathToBeUndone = pathsDrawn.get(last).first;
         pathsDrawn.remove(last);
+        /*
         boolean wasDrawing = drawing;
         setDrawing(false);
         mPaint.setStrokeWidth(mPaint.getStrokeWidth() + 1);
         mCanvas.drawPath(pathToBeUndone, mPaint);
         if(wasDrawing) setDrawing(true);
         mPaint.setStrokeWidth(mPaint.getStrokeWidth() - 1);
+        */
         mPath.reset();
         invalidate();
     }
