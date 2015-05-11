@@ -42,7 +42,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/square"
+            android:src="@mipmap/rectangle"
             android:id="@+id/dialogRectangle"
             />
         <Space
@@ -51,7 +51,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/square"
+            android:src="@mipmap/triangle"
             android:id="@+id/dialogTriangle"
             />
 

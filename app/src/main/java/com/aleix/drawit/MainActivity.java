@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity
     private String format;
 
     private GeometricElementsFragment.GeoElement chosen;
+    private Bitmap circle, square, rectangle, triangle;
 
     // GeometricElementsFragment interface implementation:
     @Override
@@ -50,20 +51,16 @@ public class MainActivity extends ActionBarActivity
         chosen = element;
         switch(chosen){
             case Circle:
-                geometricElemButton.setImageBitmap(
-                        BitmapFactory.decodeResource(getResources(), R.mipmap.circle));
+                geometricElemButton.setImageBitmap(circle);
                 break;
             case Square:
-                geometricElemButton.setImageBitmap(
-                        BitmapFactory.decodeResource(getResources(), R.mipmap.square));
+                geometricElemButton.setImageBitmap(square);
                 break;
             case Rectangle:
-                geometricElemButton.setImageBitmap(
-                        BitmapFactory.decodeResource(getResources(), R.mipmap.square));
+                geometricElemButton.setImageBitmap(rectangle);
                 break;
             case Triangle:
-                geometricElemButton.setImageBitmap(
-                        BitmapFactory.decodeResource(getResources(), R.mipmap.square));
+                geometricElemButton.setImageBitmap(triangle);
                 break;
         }
     }
@@ -79,6 +76,7 @@ public class MainActivity extends ActionBarActivity
         format = formats[0]; /*png*/  // Not needed...
 
         chosen = GeometricElementsFragment.GeoElement.Circle;
+        setUpBitmaps();
 
         // setUp();
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
@@ -254,6 +252,13 @@ public class MainActivity extends ActionBarActivity
         }
         Log.i(LOG_TAG, "Image saved to" + file.toString());
         return true;
+    }
+
+    private void setUpBitmaps(){
+        circle = BitmapFactory.decodeResource(getResources(), R.mipmap.circle);
+        square = BitmapFactory.decodeResource(getResources(), R.mipmap.square);
+        rectangle = BitmapFactory.decodeResource(getResources(), R.mipmap.rectangle);
+        triangle = BitmapFactory.decodeResource(getResources(), R.mipmap.triangle);
     }
 
     @Override

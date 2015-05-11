@@ -21,8 +21,9 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private Paint mPaint;
     private Path mPath;
     private Canvas mCanvas;
-    private Bitmap mBitmap;
     private boolean drawing;
+    private boolean pencilActive;
+
     private int color;
     private ArrayList<Pair<Path, Paint>> pathsDrawn;
 
@@ -60,7 +61,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
         //TODO: a onSizeChanged?
         // 720 is the maximum resolution, but 512 the default (when saving the bitmap)
-        mBitmap = Bitmap.createBitmap(720,720,Bitmap.Config.ARGB_8888);
+        Bitmap mBitmap = Bitmap.createBitmap(720,720,Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
 
         drawing = true; // by default
