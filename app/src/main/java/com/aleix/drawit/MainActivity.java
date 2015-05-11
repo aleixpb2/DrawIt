@@ -86,19 +86,23 @@ public class MainActivity extends ActionBarActivity
         mCustomDrawItView = (customDrawItView) findViewById(R.id.customDrawItView);
 
         pencilButton = (ImageButton) findViewById(R.id.pencil);
-        //pencilButton selected by default
-        pencilButton.setBackgroundColor(Color.GRAY);
+        pencilButton.setBackgroundColor(Color.GRAY);    //pencilButton selected by default
         geometricElemButton = (ImageButton) findViewById(R.id.geometricElem);
         geometricElemButton.setBackgroundColor(Color.parseColor(colorDisabled));
         colorButton = (ImageButton) findViewById(R.id.color);
+        colorButton.setBackgroundColor(Color.parseColor(colorDisabled));
         eraseButton = (ImageButton) findViewById(R.id.erase);
         eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
         undoButton = (ImageButton) findViewById(R.id.undo);
         undoButton.setBackgroundColor(Color.parseColor(colorDisabled));
 
+
         saveButton = (ImageButton) findViewById(R.id.save);
+        saveButton.setBackgroundColor(Color.parseColor(colorDisabled));
         //brushButton = (ImageButton) findViewById();
+        //brushButton.setBackgroundColor(Color.parseColor(colorDisabled));
         newImageButton = (ImageButton) findViewById(R.id.newImage);
+        newImageButton.setBackgroundColor(Color.parseColor(colorDisabled));
 
         setUpOnTouchListeners();
 
@@ -221,7 +225,6 @@ public class MainActivity extends ActionBarActivity
             }
         });
 
-        /* Fi del setUp */
     }
 
 
@@ -300,7 +303,8 @@ public class MainActivity extends ActionBarActivity
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     colorButton.setBackgroundColor(Color.GRAY);
-                }
+                } else if(event.getAction() == MotionEvent.ACTION_UP)
+                    colorButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 return false;
             }
         });
@@ -318,10 +322,37 @@ public class MainActivity extends ActionBarActivity
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     undoButton.setBackgroundColor(Color.GRAY);
-                }
+                }else if(event.getAction() == MotionEvent.ACTION_UP)
+                    undoButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 return false;
             }
         });
+
+
+        saveButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    saveButton.setBackgroundColor(Color.GRAY);
+                }else if(event.getAction() == MotionEvent.ACTION_UP)
+                    saveButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                return false;
+            }
+        });
+
+        //brushButton.setOnTouchListener(new OnTouch...
+
+        newImageButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    newImageButton.setBackgroundColor(Color.GRAY);
+                }else if(event.getAction() == MotionEvent.ACTION_UP)
+                    newImageButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                return false;
+            }
+        });
+
     }
 
     @Override

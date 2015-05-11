@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="10dp"
+    android:paddingTop="8dp"
 
     tools:context=".MainActivity"
     android:weightSum="1"
@@ -16,26 +16,25 @@
             android:layout_height="match_parent"
             android:src="@mipmap/pencil"
             android:id="@+id/pencil"/>
-        <Space android:layout_width="2dp" android:layout_height="match_parent"></Space>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/circle"
             android:id="@+id/geometricElem"/>
-        <Space android:layout_width="2dp" android:layout_height="match_parent"></Space>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#ff000000"
-            android:src="@drawable/abc_btn_check_to_on_mtrl_000"
+            android:src="@mipmap/square"
             android:id="@+id/color"/>
-        <Space android:layout_width="2dp" android:layout_height="match_parent"></Space>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/eraser"
             android:id="@+id/erase"/>
-        <Space android:layout_width="2dp" android:layout_height="match_parent"></Space>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -44,8 +43,9 @@
 
         </LinearLayout>
 
-    <View style="@style/Divider"/>
+    <Space android:layout_width="match_parent" android:layout_height="8dp"/>
 
+    <View style="@style/Divider"/>
 
     <com.aleix.drawit.customDrawItView
         android:layout_width="match_parent"
@@ -55,22 +55,25 @@
 
     <View style="@style/Divider"/>
 
+    <Space android:layout_width="match_parent" android:layout_height="8dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
+        android:paddingBottom="8dp"
         >
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher"
-            android:id="@+id/newImage"/>
+            android:src="@mipmap/save"
+            android:id="@+id/save"/>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/save"
-            android:id="@+id/save"/>
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/newImage"/>
     </LinearLayout>
 </LinearLayout>
 
