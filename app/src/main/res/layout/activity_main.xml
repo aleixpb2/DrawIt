@@ -74,6 +74,16 @@
             android:layout_height="match_parent"
             android:src="@mipmap/ic_launcher"
             android:id="@+id/newImage"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/abc_ic_clear_mtrl_alpha"
+            android:id="@+id/cancel"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/abc_btn_check_to_on_mtrl_015"
+            android:id="@+id/ok"/>
     </LinearLayout>
 </LinearLayout>
 

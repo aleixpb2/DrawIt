@@ -38,6 +38,8 @@ public class MainActivity extends ActionBarActivity
     private ImageButton saveButton;
     //private ImageButton brushButton;
     private ImageButton newImageButton;
+    private ImageButton cancelButton;
+    private ImageButton okButton;
 
     private String[] resolutions;
     private String resolution;
@@ -103,18 +105,25 @@ public class MainActivity extends ActionBarActivity
         //brushButton.setBackgroundColor(Color.parseColor(colorDisabled));
         newImageButton = (ImageButton) findViewById(R.id.newImage);
         newImageButton.setBackgroundColor(Color.parseColor(colorDisabled));
+        cancelButton = (ImageButton) findViewById(R.id.cancel);
+        cancelButton.setBackgroundColor(Color.parseColor(colorDisabled));
+        cancelButton.setVisibility(View.INVISIBLE); // TODO
+        //cancelButton.setVisibility(View.GONE); // TODO
+        okButton = (ImageButton) findViewById(R.id.ok);
+        //okButton.setBackgroundColor(Color.parseColor(colorDisabled)); TODO: avaluar diferencia
+        //okButton.setVisibility(View.?);
+        // TODO: usar funcio setActiveCancelOk
 
         setUpOnTouchListeners();
 
         pencilButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //pencilButton.setPressed(true);
-                //geometricElemButton.setPressed(false);
                 mCustomDrawItView.setPencilActive();
                 geometricElemButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 pencilButton.setBackgroundColor(Color.GRAY);
+                setActiveCancelOk(false);
             }
         });
 
@@ -124,6 +133,7 @@ public class MainActivity extends ActionBarActivity
                 pencilButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 geometricElemButton.setBackgroundColor(Color.GRAY);
+                setActiveCancelOk(true);
 
                 GeometricElementsFragment dialog = new GeometricElementsFragment();
                 dialog.show(getFragmentManager(), "dialogGeom");
@@ -145,6 +155,7 @@ public class MainActivity extends ActionBarActivity
                 pencilButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 geometricElemButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 eraseButton.setBackgroundColor(Color.GRAY);
+                setActiveCancelOk(false);
             }
         });
 
@@ -222,6 +233,20 @@ public class MainActivity extends ActionBarActivity
                         })
                         .show();
                 //****   .setMessage("The current drawing will be deleted")
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "cancelButton clicked");
+            }
+        });
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "okButton clicked");
             }
         });
 
@@ -339,9 +364,7 @@ public class MainActivity extends ActionBarActivity
                 return false;
             }
         });
-
         //brushButton.setOnTouchListener(new OnTouch...
-
         newImageButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -352,7 +375,30 @@ public class MainActivity extends ActionBarActivity
                 return false;
             }
         });
+        cancelButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    cancelButton.setBackgroundColor(Color.GRAY);
+                }else if(event.getAction() == MotionEvent.ACTION_UP)
+                    cancelButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                return false;
+            }
+        });
+        okButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    okButton.setBackgroundColor(Color.GRAY);
+                }else if(event.getAction() == MotionEvent.ACTION_UP)
+                    okButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                return false;
+            }
+        });
+    }
 
+    private void setActiveCancelOk(boolean active){
+        // TODO: implementar
     }
 
     @Override
