@@ -80,7 +80,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
         drawing = true; // by default
         pencilActive = true;
-        //firstClickGeo = true;
+        firstClickGeo = true;
 
         int contentWidth = getWidth();
         int contentHeight = getHeight();
@@ -130,6 +130,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
                 break;
             case MotionEvent.ACTION_MOVE: // draw the path
                 if(pencilActive) mPath.lineTo(x, y);
+                else if(!firstClickGeo){
+                    mPath.reset();
+                    drawGeo(x, y);
+                }
                 break;
             case MotionEvent.ACTION_UP: // draw it to the canvas
                 if(pencilActive) mPath.lineTo(x + 0.5f, y + 0.5f); // DOT
@@ -169,6 +173,8 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     }
 
     public void setPencilActive(){
+        if(!firstClickGeo) // we were editing the position
+            undo();
         pencilActive = true;
         mPaint.setStyle(Paint.Style.STROKE);
         setDrawing(true);
@@ -180,7 +186,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     public void setGeoElemActive(GeometricElementsFragment.GeoElement elem){
         pencilActive = false;
-        firstClickGeo = true;
+        if(!firstClickGeo) { // we were editing the position
+            undo();
+            firstClickGeo = true;
+        }
         mPaint.setStyle(Paint.Style.FILL);
         setDrawing(true);
         chosenElement = elem;
@@ -220,11 +229,11 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
                 float leftbottomy = y + h/3f;
                 float rightbottomx = x + 0.5f*side;
                 float rightbottomy = y+ h/3f;
-                float topx = x;
+                //float topx = x;
                 float topy = y - (2f*h)/3f;
                 mPath.moveTo(leftbottomx, leftbottomy);
                 mPath.lineTo(rightbottomx, rightbottomy);
-                mPath.lineTo(topx, topy);
+                mPath.lineTo(/*topx*/x, topy);
                 mPath.lineTo(leftbottomx, leftbottomy);
                 break;
         }

@@ -142,6 +142,8 @@ public class MainActivity extends ActionBarActivity
                 eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 geometricElemButton.setBackgroundColor(Color.GRAY);
 
+                setActiveCancelOk(false); // make it disappear if we come from another geoElement
+
                 GeometricElementsFragment dialog = new GeometricElementsFragment();
                 dialog.show(getFragmentManager(), "dialogGeom");
             }
