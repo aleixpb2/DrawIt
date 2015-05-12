@@ -82,7 +82,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/abc_btn_radio_to_on_mtrl_015"
+            android:src="@mipmap/cancel"
             android:id="@+id/cancel"
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/spaceCancelOk" />
@@ -92,7 +92,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/abc_btn_check_to_on_mtrl_015"
+            android:src="@mipmap/check"
             android:id="@+id/ok"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
