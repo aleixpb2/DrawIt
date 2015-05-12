@@ -80,11 +80,12 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@mipmap/pencil" />
+                    android:src="@mipmap/save" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Click this icon to draw with your finger"/>
+                    android:gravity="center_vertical"
+                    android:text="Save the image. You will be able to choose the format"/>
             </LinearLayout>
             <View style="@style/Divider"/>
             <LinearLayout
@@ -94,11 +95,57 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@mipmap/pencil" />
+                    android:src="@mipmap/brush" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Click this icon to draw with your finger"/>
+                    android:gravity="center_vertical"
+                    android:text="Choose the brush size"/>
+            </LinearLayout>
+            <View style="@style/Divider"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/newfile" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Create a new image. You will be able to choose the resolution"/>
+            </LinearLayout>
+            <View style="@style/Divider"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/cancel" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Only when drawing a Geometric Element: to cancel the positioning of the element"/>
+            </LinearLayout>
+            <View style="@style/Divider"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/check" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Only when drawing a Geometric Element: to accept the position and size of the element"/>
             </LinearLayout>
         </LinearLayout>
 
