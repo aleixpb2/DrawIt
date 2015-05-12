@@ -1,9 +1,13 @@
 package com.aleix.drawit;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class HelpActivity extends ActionBarActivity {
@@ -12,6 +16,21 @@ public class HelpActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    //Declared here because it's related to the "Help"
+    public static void showAboutDialog(Context context){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        TextView message = new TextView(context);
+        message.setText("Central\ndfgs\ndf");
+        message.setGravity(Gravity.CENTER);
+
+        dialog.setTitle("About")
+                .setView(message)
+                .setPositiveButton("Ok", null)
+                .show();
     }
 
 
@@ -31,7 +50,7 @@ public class HelpActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if(id == R.id.action_about){
-            //
+            showAboutDialog(HelpActivity.this);
             return true;
         }
         else return super.onOptionsItemSelected(item);

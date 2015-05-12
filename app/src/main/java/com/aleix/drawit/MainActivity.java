@@ -465,7 +465,7 @@ public class MainActivity extends ActionBarActivity
             return true;
         }
         else if(id == R.id.action_about){
-            //
+            HelpActivity.showAboutDialog(MainActivity.this);
             return true;
         }
         else return super.onOptionsItemSelected(item);

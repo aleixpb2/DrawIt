@@ -22,7 +22,8 @@
         </activity>
         <activity
             android:name=".HelpActivity"
-            android:label="@string/title_activity_help" >
+            android:label="Help"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 
