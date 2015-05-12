@@ -92,6 +92,9 @@
             android:id="@+id/newImage"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/spaceBeforeNew" />
+        <Space android:layout_width="4dp" android:layout_height="match_parent"
+            android:id="@+id/spaceAfterNew"
+            android:layout_toEndOf="@+id/newImage"/>
 
 
         <ImageButton
@@ -100,6 +103,7 @@
             android:src="@mipmap/cancel"
             android:id="@+id/cancel"
             android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/spaceAfterNew"
             android:layout_toStartOf="@+id/spaceCancelOk" />
         <Space android:layout_width="2dp" android:layout_height="match_parent"
             android:id="@+id/spaceCancelOk"
