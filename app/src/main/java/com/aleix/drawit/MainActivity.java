@@ -2,6 +2,7 @@ package com.aleix.drawit;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -458,11 +459,15 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(id == R.id.action_help){
+            Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+            startActivity(intent);
             return true;
         }
-
-        return super.onOptionsItemSelected(item);
+        else if(id == R.id.action_about){
+            //
+            return true;
+        }
+        else return super.onOptionsItemSelected(item);
     }
 }
