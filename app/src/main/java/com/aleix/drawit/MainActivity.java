@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity
     private ImageButton undoButton;
 
     private ImageButton saveButton;
-    //private ImageButton brushButton;
+    private ImageButton brushButton;
     private ImageButton newImageButton;
     private ImageButton cancelButton;
     private ImageButton okButton;
@@ -104,8 +104,8 @@ public class MainActivity extends ActionBarActivity
 
         saveButton = (ImageButton) findViewById(R.id.save);
         saveButton.setBackgroundColor(Color.parseColor(colorDisabled));
-        //brushButton = (ImageButton) findViewById();
-        //brushButton.setBackgroundColor(Color.parseColor(colorDisabled));
+        brushButton = (ImageButton) findViewById(R.id.brush);
+        brushButton.setBackgroundColor(Color.parseColor(colorDisabled));
         newImageButton = (ImageButton) findViewById(R.id.newImage);
         newImageButton.setBackgroundColor(Color.parseColor(colorDisabled));
         cancelButton = (ImageButton) findViewById(R.id.cancel);
@@ -212,7 +212,12 @@ public class MainActivity extends ActionBarActivity
             }
         });
 
-        //brushButton.setOnClickListener...
+        brushButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+            }
+        });
 
         newImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -378,7 +383,16 @@ public class MainActivity extends ActionBarActivity
                 return false;
             }
         });
-        //brushButton.setOnTouchListener(new OnTouch...
+        brushButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    brushButton.setBackgroundColor(Color.GRAY);
+                }else if(event.getAction() == MotionEvent.ACTION_UP)
+                    brushButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                return false;
+            }
+        });
         newImageButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

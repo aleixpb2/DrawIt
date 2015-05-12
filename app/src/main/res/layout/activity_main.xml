@@ -73,15 +73,26 @@
             android:src="@mipmap/save"
             android:id="@+id/save"/>
         <Space android:layout_width="2dp" android:layout_height="match_parent"
-            android:id="@+id/spaceBeforeNew"
+            android:id="@+id/spaceBeforeBrush"
             android:layout_toEndOf="@+id/save"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/brush"
+            android:id="@+id/brush"
+            android:layout_toEndOf="@id/spaceBeforeBrush"/>
+        <Space android:layout_width="2dp" android:layout_height="match_parent"
+            android:id="@+id/spaceBeforeNew"
+            android:layout_toEndOf="@+id/brush"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/newfile"
             android:id="@+id/newImage"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/spaceBeforeNew" />
+
 
         <ImageButton
             android:layout_width="wrap_content"
