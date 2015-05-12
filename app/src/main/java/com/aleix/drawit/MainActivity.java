@@ -55,6 +55,7 @@ public class MainActivity extends ActionBarActivity
         Log.d(LOG_TAG, "onElemClick: " + element.toString());
         chosenElement = element;
         mCustomDrawItView.setGeoElemActive(chosenElement);
+        setActiveCancelOk(true); // TODO: here?
         switch(chosenElement){
             case Circle:
                 geometricElemButton.setImageBitmap(circle);
@@ -107,12 +108,9 @@ public class MainActivity extends ActionBarActivity
         newImageButton.setBackgroundColor(Color.parseColor(colorDisabled));
         cancelButton = (ImageButton) findViewById(R.id.cancel);
         cancelButton.setBackgroundColor(Color.parseColor(colorDisabled));
-        cancelButton.setVisibility(View.INVISIBLE); // TODO
-        //cancelButton.setVisibility(View.GONE); // TODO
         okButton = (ImageButton) findViewById(R.id.ok);
-        //okButton.setBackgroundColor(Color.parseColor(colorDisabled)); TODO: avaluar diferencia
-        //okButton.setVisibility(View.?);
-        // TODO: usar funcio setActiveCancelOk
+        okButton.setBackgroundColor(Color.parseColor(colorDisabled));
+        setActiveCancelOk(false);
 
         setUpOnTouchListeners();
 
@@ -133,7 +131,6 @@ public class MainActivity extends ActionBarActivity
                 pencilButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
                 geometricElemButton.setBackgroundColor(Color.GRAY);
-                setActiveCancelOk(true);
 
                 GeometricElementsFragment dialog = new GeometricElementsFragment();
                 dialog.show(getFragmentManager(), "dialogGeom");
@@ -398,7 +395,15 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void setActiveCancelOk(boolean active){
-        // TODO: implementar
+        if(!active) {
+            cancelButton.setVisibility(View.INVISIBLE);
+            okButton.setVisibility(View.INVISIBLE);
+        }
+        else{
+            cancelButton.setVisibility(View.VISIBLE);
+            okButton.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
