@@ -22,7 +22,8 @@ import java.io.FileOutputStream;
 
 
 public class MainActivity extends ActionBarActivity
-                          implements GeometricElementsFragment.GeometricElementsListener{
+                          implements GeometricElementsFragment.GeometricElementsListener
+                                    /*,customDrawItView.DrawItListener*/{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private final String colorDisabled = "#ffbbbbbb";
@@ -49,13 +50,14 @@ public class MainActivity extends ActionBarActivity
     private GeometricElementsFragment.GeoElement chosenElement;
     private Bitmap circle, square, rectangle, triangle;
 
+    private customDrawItView.DrawItListener drawItListener;
+
     // GeometricElementsFragment interface implementation:
     @Override
     public void onElemClick(GeometricElementsFragment.GeoElement element) {
         Log.d(LOG_TAG, "onElemClick: " + element.toString());
         chosenElement = element;
         mCustomDrawItView.setGeoElemActive(chosenElement);
-        setActiveCancelOk(true); // TODO: here?
         switch(chosenElement){
             case Circle:
                 geometricElemButton.setImageBitmap(circle);
@@ -71,7 +73,6 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +114,15 @@ public class MainActivity extends ActionBarActivity
         setActiveCancelOk(false);
 
         setUpOnTouchListeners();
+
+        drawItListener = new customDrawItView.DrawItListener() {
+            @Override
+            public void onFirstClickGeo() {
+                Log.d(LOG_TAG, "onFirstClickGeo");
+                setActiveCancelOk(true); // TODO: here?
+            }
+        };
+        mCustomDrawItView.setDrawItListener(drawItListener);
 
         pencilButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,6 +247,9 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                 Log.d(LOG_TAG, "cancelButton clicked");
+                setActiveCancelOk(false);
+                mCustomDrawItView.setFirstClickGeo(true);
+                mCustomDrawItView.undo();
             }
         });
 
@@ -244,9 +257,10 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                 Log.d(LOG_TAG, "okButton clicked");
+                setActiveCancelOk(false);
+                mCustomDrawItView.setFirstClickGeo(true);
             }
         });
-
     }
 
 

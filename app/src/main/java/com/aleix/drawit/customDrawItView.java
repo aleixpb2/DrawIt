@@ -21,8 +21,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private Paint mPaint;
     private Path mPath;
     private Canvas mCanvas;
-    private boolean drawing;
-    private boolean pencilActive;
+
+    private boolean drawing; // !drawing = erasing
+    private boolean pencilActive; // !pencilActive = geometric elements active
+    private boolean firstClickGeo; // first click when geometric elements is active (!pencilActive)
 
     private GeometricElementsFragment.GeoElement chosenElement;
 
@@ -30,6 +32,17 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private ArrayList<Pair<Path, Paint>> pathsDrawn;
 
     private final String LOG_TAG = customDrawItView.class.getSimpleName();
+
+    private DrawItListener mListener;
+
+    public interface DrawItListener {
+        void onFirstClickGeo();
+    }
+
+    public void setDrawItListener(DrawItListener l) {
+        mListener = l;
+    }
+
 
     // Constructors needed to allow the ADT to interact with the view
     public customDrawItView(Context context) {
@@ -67,11 +80,13 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
         drawing = true; // by default
         pencilActive = true;
+        //firstClickGeo = true;
 
         int contentWidth = getWidth();
         int contentHeight = getHeight();
         //Debug:
         Log.d(LOG_TAG, "Painting:\nWidth = " + contentWidth + "\nHeight = " + contentHeight);
+
 
         invalidate();
     }
@@ -86,15 +101,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     @Override
     protected void onDraw(Canvas canvas) {
+
         for(Pair p : pathsDrawn)
             canvas.drawPath( (Path) p.first, (Paint) p.second);
         canvas.drawPath(mPath, mPaint);
-        /*
-        canvas.drawRect(0, 100, contentWidth, 200, mPaint);
-        canvas.drawCircle(0.0f, 0.0f, 100f, mPaint);
-        canvas.drawCircle(contentWidth/2, 0.0f, 100f, mPaint);
-        canvas.drawCircle(contentWidth, 0.0f, 100f, mPaint);
-        canvas.drawText("Text de prova", 5, contentHeight/2, mPaint); */
     }
 
     @Override
@@ -106,36 +116,15 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         switch (action){
             case MotionEvent.ACTION_DOWN: // pressed
                 mPath.moveTo(x,y);
-                if(!pencilActive) {
-                    mPath.moveTo(x, y);
-                    switch (chosenElement){
-                        case Circle:
-                            mPath.addCircle(x,y, 25f,Path.Direction.CW);
-                            break;
-                        case Square:
-                            mPath.addRect(x -25f, y - 25f, x + 25f, y + 25f, Path.Direction.CW);
-                            break;
-                        case Rectangle:
-                            mPath.addRect(x -25f, y - 15f, x + 25f, y + 15f, Path.Direction.CW);
-                            break;
-                        case Triangle:
-                            // lets review a bit of geometry (High School/Baccalaureat):
-                            // in an equilateral triangle, h = (sqrt(3)*x)/2 where x is the side
-                            // and the center is at h/3 from the bottom side
-                            // (circumcenter, incenter, orthocenter and centroid at the same point)
-                            float side = 50f;
-                            float h = (float) ((Math.sqrt(3)*side)/2f);
-                            float leftbottomx = x - 0.5f*side;
-                            float leftbottomy = y + h/3f;
-                            float rightbottomx = x + 0.5f*side;
-                            float rightbottomy = y+ h/3f;
-                            float topx = x;
-                            float topy = y - (2f*h)/3f;
-                            mPath.moveTo(leftbottomx, leftbottomy);
-                            mPath.lineTo(rightbottomx, rightbottomy);
-                            mPath.lineTo(topx, topy);
-                            mPath.lineTo(leftbottomx, leftbottomy);
-                            break;
+                if(!pencilActive) { // geo
+                    drawGeo(x, y);
+                    if(firstClickGeo){
+                        firstClickGeo = false;
+                        mListener.onFirstClickGeo();
+                    }
+                    else{
+                        undo();
+                        drawGeo(x,y);
                     }
                 }
                 break;
@@ -191,25 +180,53 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     public void setGeoElemActive(GeometricElementsFragment.GeoElement elem){
         pencilActive = false;
+        firstClickGeo = true;
         mPaint.setStyle(Paint.Style.FILL);
         setDrawing(true);
         chosenElement = elem;
     }
 
+    public void setFirstClickGeo(boolean firstClickGeo){
+        this.firstClickGeo = firstClickGeo;
+    }
+
     public void undo(){
         int last = pathsDrawn.size() - 1;
         if(last == -1) return;
-        //Path pathToBeUndone = pathsDrawn.get(last).first;
         pathsDrawn.remove(last);
-        /*
-        boolean wasDrawing = drawing;
-        setDrawing(false);
-        mPaint.setStrokeWidth(mPaint.getStrokeWidth() + 1);
-        mCanvas.drawPath(pathToBeUndone, mPaint);
-        if(wasDrawing) setDrawing(true);
-        mPaint.setStrokeWidth(mPaint.getStrokeWidth() - 1);
-        */
         mPath.reset();
         invalidate();
+    }
+
+    private void drawGeo(float x, float y){
+        switch (chosenElement){
+            case Circle:
+                mPath.addCircle(x,y, 25f,Path.Direction.CW);
+                break;
+            case Square:
+                mPath.addRect(x -25f, y - 25f, x + 25f, y + 25f, Path.Direction.CW);
+                break;
+            case Rectangle:
+                mPath.addRect(x -25f, y - 15f, x + 25f, y + 15f, Path.Direction.CW);
+                break;
+            case Triangle:
+                // lets review a bit of geometry (High School/Baccalaureat):
+                // in an equilateral triangle, h = (sqrt(3)*x)/2 where x is the side
+                // and the center is at h/3 from the bottom side
+                // (circumcenter, incenter, orthocenter and centroid at the same point)
+                float side = 50f;
+                float h = (float) ((Math.sqrt(3)*side)/2f);
+                float leftbottomx = x - 0.5f*side;
+                float leftbottomy = y + h/3f;
+                float rightbottomx = x + 0.5f*side;
+                float rightbottomy = y+ h/3f;
+                float topx = x;
+                float topy = y - (2f*h)/3f;
+                mPath.moveTo(leftbottomx, leftbottomy);
+                mPath.lineTo(rightbottomx, rightbottomy);
+                mPath.lineTo(topx, topy);
+                mPath.lineTo(leftbottomx, leftbottomy);
+                break;
+        }
     }
 }
