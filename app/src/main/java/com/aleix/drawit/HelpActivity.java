@@ -24,7 +24,7 @@ public class HelpActivity extends ActionBarActivity {
     public static void showAboutDialog(Context context){
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         TextView message = new TextView(context);
-        message.setText("Central\ndfgs\ndf");
+        message.setText("DrawIt version 1.0\nCreated by Aleix Paris\nIDI Project, spring 2015");
         message.setGravity(Gravity.CENTER);
 
         dialog.setTitle("About")
