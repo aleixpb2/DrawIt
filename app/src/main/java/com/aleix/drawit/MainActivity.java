@@ -322,7 +322,12 @@ public class MainActivity extends ActionBarActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 setActiveCancelOk(false);
-                                mCustomDrawItView.setGeoElemActive(mCustomDrawItView.getChosenElement());
+
+                                mCustomDrawItView.setPencilActive();
+                                geometricElemButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                                eraseButton.setBackgroundColor(Color.parseColor(colorDisabled));
+                                pencilButton.setBackgroundColor(Color.GRAY);
+
                                 Log.d("Final resolution", resolution);
                                 mCustomDrawItView.newImage();
                             }

@@ -193,7 +193,9 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     public void newImage(){
         mCanvas.drawColor(Color.WHITE);
         drawing = true; // we don't want to start a drawing erasing!
+        pencilActive = true;
         mPaint.setColor(color);
+        mPaint.setStyle(Paint.Style.STROKE);
         pathsDrawn.clear();
         invalidate();
     }
