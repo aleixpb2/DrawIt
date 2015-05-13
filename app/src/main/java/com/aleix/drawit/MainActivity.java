@@ -23,8 +23,8 @@ import java.io.FileOutputStream;
 
 
 public class MainActivity extends ActionBarActivity
-                          implements GeometricElementsFragment.GeometricElementsListener
-                                    /*,customDrawItView.DrawItListener*/{
+                          implements GeometricElementsFragment.GeometricElementsListener,
+                                     BrushFragment.BrushListener{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private final String colorDisabled = "#ffbbbbbb";
@@ -74,6 +74,14 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
     }
+    // BrushFragment interface implementation:
+    @Override
+    public void onBrushClick(char smb) {
+        Log.d(LOG_TAG, "onElemClick: " + smb);
+        mCustomDrawItView.setSizeSMB(smb);
+        // TODO: change images
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -226,6 +234,8 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                 setActiveCancelOk(false);
+                BrushFragment dialog = new BrushFragment();
+                dialog.show(getFragmentManager(), "dialogBrush");
             }
         });
 

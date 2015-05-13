@@ -31,6 +31,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     private float xBeforeLongClick, yBeforeLongClick;
 
+    private final int smallSize = 10;
+    private final int mediumSize = 20;
+    private final int bigSize = 30;
+
     private GeometricElementsFragment.GeoElement chosenElement;
 
     private int color;
@@ -77,12 +81,11 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         mPaint.setDither(true);
 
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(10); // by default
+        mPaint.setStrokeWidth(mediumSize); // by default
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         color = Color.BLACK;
         mPaint.setColor(Color.BLACK); // Black by default
-        mPaint.setTextSize(40); // not needed...
 
         mPath = new Path();
 
@@ -281,6 +284,22 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
                 mPath.lineTo(/*topx*/x, topy);
                 mPath.lineTo(leftbottomx, leftbottomy);
                 break;
+        }
+    }
+
+    public void setSizeSMB(char smb){
+        switch(smb){
+            case 's':
+                mPaint.setStrokeWidth(smallSize);
+                break;
+            case 'm':
+                mPaint.setStrokeWidth(mediumSize);
+                break;
+            case 'b':
+                mPaint.setStrokeWidth(bigSize);
+                break;
+            default:
+                mPaint.setStrokeWidth(mediumSize);
         }
     }
 }
