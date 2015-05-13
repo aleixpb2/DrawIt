@@ -27,6 +27,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private boolean pencilActive; // !pencilActive = geometric elements active
     private boolean firstClickGeo; // first click when geometric elements is active (!pencilActive)
     private boolean longClicking;
+    private Pair<Boolean, Float> sizeAfterLongClick; // boolean means if it matters
 
     private float xBeforeLongClick, yBeforeLongClick;
 
@@ -95,6 +96,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         pencilActive = true;
         firstClickGeo = true;
         longClicking = false;
+        sizeAfterLongClick = new Pair<>(Boolean.FALSE, null);
 
         int contentWidth = getWidth();
         int contentHeight = getHeight();
@@ -133,14 +135,16 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
                 if(!pencilActive) { // geo
                     xBeforeLongClick = x;
                     yBeforeLongClick = y;
-                    drawGeo(x, y, 1f);
+                    drawGeo(x, y,
+                            sizeAfterLongClick.first == Boolean.TRUE? sizeAfterLongClick.second : 1f);
                     if(firstClickGeo){
                         firstClickGeo = false;
                         mListener.onFirstClickGeo();
                     }
                     else{
                         undo();
-                        drawGeo(x,y, 1f);
+                        drawGeo(x,y,
+                                sizeAfterLongClick.first == Boolean.TRUE? sizeAfterLongClick.second : 1f);
                     }
                 }
                 break;
@@ -149,13 +153,18 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
                 if(pencilActive) mPath.lineTo(x, y);
                 else if(!firstClickGeo && !longClicking){
                     mPath.reset();
-                    drawGeo(x, y, 1f);
+                    drawGeo(x, y,
+                            sizeAfterLongClick.first == Boolean.TRUE? sizeAfterLongClick.second : 1f);
                     xBeforeLongClick = x;
                     yBeforeLongClick = y;
                 }
                 else if(longClicking){
                     mPath.reset();
-                    drawGeo(xBeforeLongClick,yBeforeLongClick, Math.max(1f + (x - xBeforeLongClick)/80f, 0.2f));
+                    /*float baseSize = sizeAfterLongClick.first == Boolean.TRUE?
+                            sizeAfterLongClick.second : 1f;*/
+                    float size = Math.max(1f + (x - xBeforeLongClick) / 60f, 0.2f);
+                    sizeAfterLongClick = new Pair<>(Boolean.TRUE, size);
+                    drawGeo(xBeforeLongClick,yBeforeLongClick, size);
                 }
                 break;
             case MotionEvent.ACTION_UP: // draw it to the canvas
@@ -217,6 +226,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     public void setGeoElemActive(GeometricElementsFragment.GeoElement elem){
         pencilActive = false;
+        sizeAfterLongClick = new Pair<>(Boolean.FALSE, null);
         if(!firstClickGeo) { // we were editing the position
             undo();
             firstClickGeo = true;
