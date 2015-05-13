@@ -24,7 +24,8 @@ import java.io.FileOutputStream;
 
 public class MainActivity extends ActionBarActivity
                           implements GeometricElementsFragment.GeometricElementsListener,
-                                     BrushFragment.BrushListener{
+                                     BrushFragment.BrushListener,
+                                     ColorsFragment.ColorsListener{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private final String colorDisabled = "#ffbbbbbb";
@@ -50,6 +51,7 @@ public class MainActivity extends ActionBarActivity
 
     private GeometricElementsFragment.GeoElement chosenElement;
     private Bitmap circle, square, rectangle, triangle;
+    private Bitmap brushs, brushm, brushb;
 
     private customDrawItView.DrawItListener drawItListener;
 
@@ -79,7 +81,57 @@ public class MainActivity extends ActionBarActivity
     public void onBrushClick(char smb) {
         Log.d(LOG_TAG, "onElemClick: " + smb);
         mCustomDrawItView.setSizeSMB(smb);
-        // TODO: change images
+        // TODO: debug change images
+        switch(smb){
+            case 's':
+                brushButton.setImageBitmap(brushs);
+                break;
+            case 'm':
+                brushButton.setImageBitmap(brushm);
+                break;
+            case 'b':
+                brushButton.setImageBitmap(brushb);
+                break;
+            default:
+                brushButton.setImageBitmap(brushm);
+        }
+    }
+    // ColorsFragment interface implementation
+    @Override
+    public void onColorsClick(ColorsFragment.DrawItColor color) {
+        Log.d(LOG_TAG, "onColorsClick: " + color.name());
+        int paintColor;
+        switch (color){
+            case Y:
+                paintColor = Color.YELLOW;
+                break;
+            case G:
+
+                break;
+            case C:
+
+                break;
+            case M:
+
+                break;
+            case R:
+
+                break;
+            case B:
+
+                break;
+            case BLACK:
+
+                break;
+            case BROWN:
+
+                break;
+            case WHITE:
+
+                break;
+            default:
+        }
+        mCustomDrawItView.setPaintColor(paintColor);
     }
 
     @Override
@@ -128,7 +180,7 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onFirstClickGeo() {
                 Log.d(LOG_TAG, "onFirstClickGeo");
-                setActiveCancelOk(true); // TODO: here?
+                setActiveCancelOk(true);
             }
         };
         mCustomDrawItView.setDrawItListener(drawItListener);
@@ -343,6 +395,9 @@ public class MainActivity extends ActionBarActivity
         square = BitmapFactory.decodeResource(getResources(), R.mipmap.square);
         rectangle = BitmapFactory.decodeResource(getResources(), R.mipmap.rectangle);
         triangle = BitmapFactory.decodeResource(getResources(), R.mipmap.triangle);
+        brushs = BitmapFactory.decodeResource(getResources(), R.mipmap.brush);
+        brushm = BitmapFactory.decodeResource(getResources(), R.mipmap.brush);
+        brushb = BitmapFactory.decodeResource(getResources(), R.mipmap.brush);// TODO: s m b
     }
 
     private void setUpOnTouchListeners() {
