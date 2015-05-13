@@ -82,7 +82,6 @@ public class MainActivity extends ActionBarActivity
     public void onBrushClick(char smb) {
         Log.d(LOG_TAG, "onElemClick: " + smb);
         mCustomDrawItView.setSizeSMB(smb);
-        // TODO: change the images (bigger!)
         switch(smb){
             case 's':
                 brushButton.setImageBitmap(brushs);

@@ -185,7 +185,7 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     }
 
     public void setPaintColor(int paintColor){
-        invalidate(); // TODO: no cal?
+        invalidate(); // not needed?
         color = paintColor;
         mPaint.setColor(paintColor);
     }
