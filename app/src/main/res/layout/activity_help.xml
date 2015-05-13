@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="Select a Geometric Element to draw with. You will be able to choose an element from circle, square, rectangle and triangle. Click and drag to move the element before confirming and longclick and move your finger horizontally to change its size"/>
+                    android:text="Select a Geometric Element to draw with. You will be able to choose an element from circle, square, rectangle and triangle. Click and drag to move the element before confirming it with the check button and longclick and move your finger horizontally to change its size"/>
             </LinearLayout>
             <View style="@style/Divider"/>
             <LinearLayout
@@ -50,7 +50,7 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@mipmap/square" />
+                    android:src="@mipmap/colblack" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
