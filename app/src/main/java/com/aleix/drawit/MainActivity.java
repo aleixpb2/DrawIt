@@ -173,7 +173,12 @@ public class MainActivity extends ActionBarActivity
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setActiveCancelOk(false);
+                if(!mCustomDrawItView.getPencilActive()){ //geo
+                    if(!mCustomDrawItView.getFirstClickGeo()){ // Ok and Cancel enabled
+                        mCustomDrawItView.setFirstClickGeo(true);
+                        setActiveCancelOk(false);
+                    }
+                }
                 mCustomDrawItView.undo();
             }
         });
@@ -449,7 +454,7 @@ public class MainActivity extends ActionBarActivity
         // Ask to leave
         AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
         dialog.setTitle("Really exit?")
-                .setMessage("The drawing will be deleted")
+                .setMessage("The unsaved changes will be deleted")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

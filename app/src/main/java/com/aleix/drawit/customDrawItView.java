@@ -240,6 +240,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         this.firstClickGeo = firstClickGeo;
     }
 
+    public boolean getFirstClickGeo(){
+        return firstClickGeo;
+    }
+
     public void undo(){
         int last = pathsDrawn.size() - 1;
         if(last == -1) return;
