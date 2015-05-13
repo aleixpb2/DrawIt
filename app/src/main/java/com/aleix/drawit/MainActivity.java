@@ -153,7 +153,8 @@ public class MainActivity extends ActionBarActivity
         colorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                setActiveCancelOk(false);
+
             }
         });
 
@@ -172,6 +173,7 @@ public class MainActivity extends ActionBarActivity
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setActiveCancelOk(false);
                 mCustomDrawItView.undo();
             }
         });
@@ -195,6 +197,9 @@ public class MainActivity extends ActionBarActivity
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                setActiveCancelOk(false);
+                                //mCustomDrawItView.setFirstClickGeo(true);
+                                mCustomDrawItView.setGeoElemActive(mCustomDrawItView.getChosenElement());
                                 boolean saved = saveImage(format); // too much code here, better with this function
                                 if (saved)
                                     Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
@@ -215,7 +220,7 @@ public class MainActivity extends ActionBarActivity
         brushButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                setActiveCancelOk(false);
             }
         });
 
@@ -236,6 +241,8 @@ public class MainActivity extends ActionBarActivity
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                setActiveCancelOk(false);
+                                mCustomDrawItView.setGeoElemActive(mCustomDrawItView.getChosenElement());
                                 Log.d("Final resolution", resolution);
                                 mCustomDrawItView.newImage();
                             }

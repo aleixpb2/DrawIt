@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,6 +26,9 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private boolean drawing; // !drawing = erasing
     private boolean pencilActive; // !pencilActive = geometric elements active
     private boolean firstClickGeo; // first click when geometric elements is active (!pencilActive)
+    private boolean longClicking;
+
+    private float xBeforeLongClick, yBeforeLongClick;
 
     private GeometricElementsFragment.GeoElement chosenElement;
 
@@ -32,6 +36,15 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     private ArrayList<Pair<Path, Paint>> pathsDrawn;
 
     private final String LOG_TAG = customDrawItView.class.getSimpleName();
+
+    final Handler handler = new Handler();
+    Runnable mLongPress = new Runnable() {
+        public void run() {
+            Log.i(LOG_TAG, "longPress");
+            longClicking = true;
+        }
+    };
+
 
     private DrawItListener mListener;
 
@@ -74,13 +87,14 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
         pathsDrawn = new ArrayList<>();
 
-        // 720 is the maximum resolution, but 512 the default (when saving the bitmap)
+        // 720 is the maximum resolution, but 512 the default (when creating the bitmap)
         Bitmap mBitmap = Bitmap.createBitmap(720,720,Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
 
         drawing = true; // by default
         pencilActive = true;
         firstClickGeo = true;
+        longClicking = false;
 
         int contentWidth = getWidth();
         int contentHeight = getHeight();
@@ -109,33 +123,44 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        //get the x and the y of the event:
         float x = event.getX();
         float y = event.getY();
         int action = event.getAction();
         switch (action){
             case MotionEvent.ACTION_DOWN: // pressed
+                handler.postDelayed(mLongPress, 200); // schedule the LongClick
                 mPath.moveTo(x,y);
                 if(!pencilActive) { // geo
-                    drawGeo(x, y);
+                    xBeforeLongClick = x;
+                    yBeforeLongClick = y;
+                    drawGeo(x, y, 1f);
                     if(firstClickGeo){
                         firstClickGeo = false;
                         mListener.onFirstClickGeo();
                     }
                     else{
                         undo();
-                        drawGeo(x,y);
+                        drawGeo(x,y, 1f);
                     }
                 }
                 break;
             case MotionEvent.ACTION_MOVE: // draw the path
+                handler.removeCallbacks(mLongPress); // cancel the LongClick
                 if(pencilActive) mPath.lineTo(x, y);
-                else if(!firstClickGeo){
+                else if(!firstClickGeo && !longClicking){
                     mPath.reset();
-                    drawGeo(x, y);
+                    drawGeo(x, y, 1f);
+                    xBeforeLongClick = x;
+                    yBeforeLongClick = y;
+                }
+                else if(longClicking){
+                    mPath.reset();
+                    drawGeo(xBeforeLongClick,yBeforeLongClick, Math.max(1f + (x - xBeforeLongClick)/80f, 0.2f));
                 }
                 break;
             case MotionEvent.ACTION_UP: // draw it to the canvas
+                handler.removeCallbacks(mLongPress); // cancel the LongClick
+                longClicking = false;
                 if(pencilActive) mPath.lineTo(x + 0.5f, y + 0.5f); // DOT
                     //mCanvas.drawPath(mPath, mPaint);
                 pathsDrawn.add(new Pair<>(new Path(mPath), new Paint(mPaint)));
@@ -173,8 +198,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
     }
 
     public void setPencilActive(){
-        if(!firstClickGeo) // we were editing the position
+        if(!firstClickGeo) { // we were editing the position
             undo();
+            firstClickGeo = true;
+        }
         pencilActive = true;
         mPaint.setStyle(Paint.Style.STROKE);
         setDrawing(true);
@@ -182,6 +209,10 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
 
     public boolean getPencilActive(){
         return pencilActive;
+    }
+
+    public GeometricElementsFragment.GeoElement getChosenElement(){
+        return chosenElement;
     }
 
     public void setGeoElemActive(GeometricElementsFragment.GeoElement elem){
@@ -207,23 +238,23 @@ public class customDrawItView extends View/* implements View.OnTouchListener */{
         invalidate();
     }
 
-    private void drawGeo(float x, float y){
+    private void drawGeo(float x, float y, float size){
         switch (chosenElement){
             case Circle:
-                mPath.addCircle(x,y, 25f,Path.Direction.CW);
+                mPath.addCircle(x,y, 25f*size,Path.Direction.CW);
                 break;
             case Square:
-                mPath.addRect(x -25f, y - 25f, x + 25f, y + 25f, Path.Direction.CW);
+                mPath.addRect(x -25f*size, y - 25f*size, x + 25f*size, y + 25f*size, Path.Direction.CW);
                 break;
             case Rectangle:
-                mPath.addRect(x -25f, y - 15f, x + 25f, y + 15f, Path.Direction.CW);
+                mPath.addRect(x -25f*size, y - 15f*size, x + 25f*size, y + 15f*size, Path.Direction.CW);
                 break;
             case Triangle:
                 // lets review a bit of geometry (High School/Baccalaureat):
                 // in an equilateral triangle, h = (sqrt(3)*x)/2 where x is the side
                 // and the center is at h/3 from the bottom side
                 // (circumcenter, incenter, orthocenter and centroid at the same point)
-                float side = 50f;
+                float side = 50f*size;
                 float h = (float) ((Math.sqrt(3)*side)/2f);
                 float leftbottomx = x - 0.5f*side;
                 float leftbottomy = y + h/3f;
