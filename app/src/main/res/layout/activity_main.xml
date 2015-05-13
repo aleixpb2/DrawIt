@@ -28,7 +28,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/square"
+            android:src="@mipmap/colblack"
             android:id="@+id/color"/>
         <Space android:layout_width="2dp" android:layout_height="match_parent"/>
         <ImageButton

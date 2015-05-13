@@ -52,6 +52,7 @@ public class MainActivity extends ActionBarActivity
     private GeometricElementsFragment.GeoElement chosenElement;
     private Bitmap circle, square, rectangle, triangle;
     private Bitmap brushs, brushm, brushb;
+    private Bitmap colY, colG, colC, colM, colR, colB, colBlack, colBrown, colWhite;
 
     private customDrawItView.DrawItListener drawItListener;
 
@@ -104,33 +105,43 @@ public class MainActivity extends ActionBarActivity
         switch (color){
             case Y:
                 paintColor = Color.YELLOW;
+                colorButton.setImageBitmap(colY);
                 break;
             case G:
                 paintColor = Color.GREEN;
+                colorButton.setImageBitmap(colG);
                 break;
             case C:
                 paintColor = Color.CYAN;
+                colorButton.setImageBitmap(colC);
                 break;
             case M:
                 paintColor = Color.MAGENTA;
+                colorButton.setImageBitmap(colM);
                 break;
             case R:
                 paintColor = Color.RED;
+                colorButton.setImageBitmap(colR);
                 break;
             case B:
                 paintColor = Color.BLUE;
+                colorButton.setImageBitmap(colB);
                 break;
             case BLACK:
                 paintColor = Color.BLACK;
+                colorButton.setImageBitmap(colBlack);
                 break;
             case BROWN:
-                paintColor = Color.parseColor("ff9B3C15"); // RGB = 155, 60, 21
+                paintColor = Color.parseColor("#ff9b3c15"); // RGB = 155, 60, 21
+                colorButton.setImageBitmap(colBrown);
                 break;
             case WHITE:
                 paintColor = Color.WHITE;
+                colorButton.setImageBitmap(colWhite);
                 break;
             default:
                 paintColor = Color.BLACK;
+                colorButton.setImageBitmap(colBlack);
         }
         mCustomDrawItView.setPaintColor(paintColor);
     }
@@ -214,8 +225,7 @@ public class MainActivity extends ActionBarActivity
         colorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setActiveCancelOk(false);
-
+                //setActiveCancelOk(false);
                 ColorsFragment dialog = new ColorsFragment();
                 dialog.show(getFragmentManager(), "dialogColors");
 
@@ -289,7 +299,7 @@ public class MainActivity extends ActionBarActivity
         brushButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setActiveCancelOk(false);
+                //setActiveCancelOk(false);
                 BrushFragment dialog = new BrushFragment();
                 dialog.show(getFragmentManager(), "dialogBrush");
             }
@@ -394,14 +404,25 @@ public class MainActivity extends ActionBarActivity
         return true;
     }
 
-    private void setUpBitmaps(){
+    private void setUpBitmaps(){ // to load only once the bitmaps
         circle = BitmapFactory.decodeResource(getResources(), R.mipmap.circle);
         square = BitmapFactory.decodeResource(getResources(), R.mipmap.square);
         rectangle = BitmapFactory.decodeResource(getResources(), R.mipmap.rectangle);
         triangle = BitmapFactory.decodeResource(getResources(), R.mipmap.triangle);
+
         brushs = BitmapFactory.decodeResource(getResources(), R.mipmap.brushs);
         brushm = BitmapFactory.decodeResource(getResources(), R.mipmap.brushm);
         brushb = BitmapFactory.decodeResource(getResources(), R.mipmap.brushb);
+
+        colY = BitmapFactory.decodeResource(getResources(), R.mipmap.coly);
+        colG = BitmapFactory.decodeResource(getResources(), R.mipmap.colg);
+        colC = BitmapFactory.decodeResource(getResources(), R.mipmap.colc);
+        colM = BitmapFactory.decodeResource(getResources(), R.mipmap.colm);
+        colR = BitmapFactory.decodeResource(getResources(), R.mipmap.colr);
+        colB = BitmapFactory.decodeResource(getResources(), R.mipmap.colb);
+        colBlack = BitmapFactory.decodeResource(getResources(), R.mipmap.colblack);
+        colBrown = BitmapFactory.decodeResource(getResources(), R.mipmap.colbrown);
+        colWhite = BitmapFactory.decodeResource(getResources(), R.mipmap.colwhite);
     }
 
     private void setUpOnTouchListeners() {
