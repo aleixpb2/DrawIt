@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity
     public void onBrushClick(char smb) {
         Log.d(LOG_TAG, "onElemClick: " + smb);
         mCustomDrawItView.setSizeSMB(smb);
-        // TODO: debug change images
+        // TODO: change the images (bigger!)
         switch(smb){
             case 's':
                 brushButton.setImageBitmap(brushs);
@@ -106,30 +106,31 @@ public class MainActivity extends ActionBarActivity
                 paintColor = Color.YELLOW;
                 break;
             case G:
-
+                paintColor = Color.GREEN;
                 break;
             case C:
-
+                paintColor = Color.CYAN;
                 break;
             case M:
-
+                paintColor = Color.MAGENTA;
                 break;
             case R:
-
+                paintColor = Color.RED;
                 break;
             case B:
-
+                paintColor = Color.BLUE;
                 break;
             case BLACK:
-
+                paintColor = Color.BLACK;
                 break;
             case BROWN:
-
+                paintColor = Color.parseColor("ff9B3C15"); // RGB = 155, 60, 21
                 break;
             case WHITE:
-
+                paintColor = Color.WHITE;
                 break;
             default:
+                paintColor = Color.BLACK;
         }
         mCustomDrawItView.setPaintColor(paintColor);
     }
@@ -214,6 +215,9 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                 setActiveCancelOk(false);
+
+                ColorsFragment dialog = new ColorsFragment();
+                dialog.show(getFragmentManager(), "dialogColors");
 
             }
         });
@@ -395,9 +399,9 @@ public class MainActivity extends ActionBarActivity
         square = BitmapFactory.decodeResource(getResources(), R.mipmap.square);
         rectangle = BitmapFactory.decodeResource(getResources(), R.mipmap.rectangle);
         triangle = BitmapFactory.decodeResource(getResources(), R.mipmap.triangle);
-        brushs = BitmapFactory.decodeResource(getResources(), R.mipmap.brush);
-        brushm = BitmapFactory.decodeResource(getResources(), R.mipmap.brush);
-        brushb = BitmapFactory.decodeResource(getResources(), R.mipmap.brush);// TODO: s m b
+        brushs = BitmapFactory.decodeResource(getResources(), R.mipmap.brushs);
+        brushm = BitmapFactory.decodeResource(getResources(), R.mipmap.brushm);
+        brushb = BitmapFactory.decodeResource(getResources(), R.mipmap.brushb);
     }
 
     private void setUpOnTouchListeners() {

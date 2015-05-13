@@ -9,19 +9,19 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/circle"
+            android:src="@mipmap/brushs"
             android:id="@+id/dialogSmall"
             />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/circle"
+            android:src="@mipmap/brushm"
             android:id="@+id/dialogMedium"
             />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/circle"
+            android:src="@mipmap/brushb"
             android:id="@+id/dialogBig"
             />
 
